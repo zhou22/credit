@@ -6,10 +6,20 @@ var
 //新增面板属性值
     worktaskEditlastId                     =   $('#worktask-edit-lastName'),
     worktaskEditnextId                     =   $('#worktask-edit-nextName'),
+    worktaskEditworkId                     =   $('#worktask-edit-work_id'),
     worktaskEditworkName                   =   $('#worktask-edit-workName'),
+    worktaskEdittaskId                     =   $('#worktask-edit-task_id'),
     worktaskEdittaskName                   =   $('#worktask-edit-taskName'),
     worktaskEditRemark                     =   $('#worktask-edit-remark'),
     worktaskEditId                         =   $('#worktask-edit-id')
+
+
+    var lastid =  $('#worktask-edit-last_id').val();
+    var lastname =  $('#worktask-edit-lastName').val();
+    var nextid =  $('#worktask-edit-next_id').val();
+    var nextname =  $('#worktask-edit-nextName').val();
+    var workid = worktaskEditworkId.val();
+    var workname = worktaskEditworkName.val();
 //修改面板
 function worktaskEditing()
 {
@@ -20,11 +30,10 @@ function worktaskEditing()
             type : 'put',
             data : {
                 _token : $('meta[name="csrf-token"]').attr('content'),
-                task_name : $.trim(worktaskEdittaskName.combobox('getText')),
-                work_name : $.trim(worktaskEditworkName.combobox('getText')),
-                task_id : $.trim(worktaskEdittaskName.combobox('getValue')),
-                work_id : $.trim(worktaskEditworkName.combobox('getValue')),
-
+                task_id : $.trim(worktaskEdittaskId.val()),
+                task_name : $.trim(worktaskEdittaskName.val()),
+                work_id : $.trim(worktaskEditworkName.combotree('getValue')),
+                work_name : $.trim(worktaskEditworkName.combotree('getText')),
                 last_id : $.trim(worktaskEditlastId.combogrid('getValue')),
                 next_id : $.trim(worktaskEditnextId.combogrid('getValue')),
 
@@ -64,7 +73,7 @@ function worktaskEditing()
 worktaskEditlastId.combogrid({
     width : 180,
     height : 32,
-    url : '/worktask/getList',
+    url : '',//'/worktask/getList'
     method : 'post',
     panelWidth : 450,
     panelHeight : 'auto',
@@ -74,7 +83,7 @@ worktaskEditlastId.combogrid({
     border : false,
     idField:'id',
     textField:'task_name',
-    editable : false,
+    editable : true,
     sortName : 'created_at',
     sortOrder : 'DESC',
     pagination : true,
@@ -84,7 +93,7 @@ worktaskEditlastId.combogrid({
     queryParams: {
          _token : $('meta[name="csrf-token"]').attr('content'),
          selectValue : 1,
-         keyWork : $('#worktask-edit-work_id').val()
+         keyWork : worktaskEditworkId.val()
     },
     columns : [[
         {
@@ -150,7 +159,7 @@ worktaskEditlastId.combogrid({
 worktaskEditnextId.combogrid({
     width : 180,
     height : 32,
-    url : '/worktask/getList',
+    url : '',//'/worktask/getList'
     method : 'post',
     panelWidth : 450,
     panelHeight : 'auto',
@@ -170,7 +179,7 @@ worktaskEditnextId.combogrid({
     queryParams: {
          _token : $('meta[name="csrf-token"]').attr('content'),
          selectValue : 1,
-         keyWork : $('#worktask-edit-work_id').val()
+         keyWork : worktaskEditworkId.val()
     },
     columns : [[
         {
@@ -233,68 +242,63 @@ worktaskEditnextId.combogrid({
 
 
 //事务名
-worktaskEditworkName.combobox({
+worktaskEditworkName.combotree({
     width : 180,
     height : 32,
-    url : '/work/getList',
-    queryParams: {
-         _token : $('meta[name="csrf-token"]').attr('content')
-
-    },
+    url :'',
+    method:'post',
     required : true,
     editable : true,
-    valueField : 'id',
-    textField : 'name',
-    panelHeight : 'auto',
+    queryParams: {
+         _token : $('meta[name="csrf-token"]').attr('content'),
+         category :"事务",
+         selectValue : 1,
+         requestType : 'combotree'
+    },
+    onShowPanel : function()
+    {
+        url = worktaskEditworkName.combotree('options').url;
+        if (url == '') {
+            worktaskEditworkName.combotree('options').url = '/work/getList';
+            worktaskEditworkName.combotree('reload');
+        }
+    },
     onHidePanel : function() 
     {  
-        getCombobox(worktaskEditworkName);//验证用户是否选择下拉 
+        getCombotree(worktaskEditworkName);//验证用户是否选择下拉
+    },
+    onClick : function(node)
+    {
+        worktaskEditlastId.combogrid('grid').datagrid('options').url = '/worktask/getList';
+
         worktaskEditlastId.combogrid('grid').datagrid('load',{
-                keyWork : worktaskEditworkName.combobox('getValue'),
+                keyWork : node.id,
                 selectValue : 1,
                 _token : $('meta[name="csrf-token"]').attr('content')
             });
-        worktaskEditlastId.combogrid('setValue',{id:'',name:''});
 
+        worktaskEditnextId.combogrid('grid').datagrid('options').url = '/worktask/getList';
 
         worktaskEditnextId.combogrid('grid').datagrid('load',{
-                keyWork : worktaskEditworkName.combobox('getValue'),
+                keyWork : node.id,
                 selectValue : 1,
                 _token : $('meta[name="csrf-token"]').attr('content')
             });
+
+
+        worktaskEditlastId.combogrid('setValue',{id:'',name:''});
         worktaskEditnextId.combogrid('setValue',{id:'',name:''});
-
-
     }
 });
 
 //流程名
-worktaskEdittaskName.combobox({
+worktaskEdittaskName.textbox({
     width : 180,
     height : 32,
-    disabled : true,
-    url : '/task/getList',
-    queryParams: {
-         _token : $('meta[name="csrf-token"]').attr('content')
-    },
-    required : true,
-    editable : true,
-    valueField : 'id',
-    textField : 'name',
-    panelHeight : 'auto',
-    onHidePanel : function()
-    {  
-        getCombobox(worktaskEdittaskName);//验证用户是否选择下拉
-    }
+    disabled : true
 });
 
 //设置上一项和下一项的值
-$(function(){
-
-    var lastid =  $('#worktask-edit-last_id').val();
-    var lastname =  $('#worktask-edit-lastName').val();
-    var nextid =  $('#worktask-edit-next_id').val();
-    var nextname =  $('#worktask-edit-nextName').val();
 
     if (lastid == 0 || lastid == '') {
         lastname = '无';
@@ -306,10 +310,9 @@ $(function(){
 
     worktaskEditlastId.combogrid('setValue',{id:lastid,task_name:lastname});
     worktaskEditnextId.combogrid('setValue',{id:nextid,task_name:nextname});
+    worktaskEditworkName.combotree('setValue',{id:workid,text:workname});
 
-    worktaskEditworkName.combobox('setValue',$('#worktask-edit-work_id').val());
-    worktaskEdittaskName.combobox('setValue',$('#worktask-edit-task_id').val());
-});
+
 $('#worktask-edit table:first').show();
 
 

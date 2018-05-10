@@ -61,38 +61,50 @@ function taskpersonAdding()
 }
 
 //事务列表
-taskpersonAddworkName.combobox({
+taskpersonAddworkName.combotree({
     width : 180,
     height : 32,
-    url : '/work/getList',
-    queryParams: {
-         _token : $('meta[name="csrf-token"]').attr('content')
-
-    },
+    url :'',//'/work/getList'
+    method:'post',
     required : true,
     editable : true,
-    valueField : 'id',
-    textField : 'name',
-    panelHeight : 'auto',
-    onHidePanel : function() 
+    queryParams: {
+         _token : $('meta[name="csrf-token"]').attr('content'),
+         category :"事务",
+         selectValue : 1,
+         requestType : 'combotree'
+    },
+    onShowPanel : function()
+    {
+        url = taskpersonAddworkName.combotree('options').url;
+        if (url == '') {
+            taskpersonAddworkName.combotree('options').url = '/work/getList';
+            taskpersonAddworkName.combotree('reload');
+        }
+    },
+    onHidePanel : function()
     {  
-        getCombobox(taskpersonAddworkName);//验证用户是否选择下拉 
-        taskpersonAddtaskWork.combogrid('grid').datagrid('load',{
-                keyWork : taskpersonAddworkName.combobox('getValue'),
+        getCombotree(taskpersonAddworkName);//验证用户是否选择下拉
+    },
+    onClick : function(node)
+    {
+        taskpersonAddtaskWork.combogrid('grid').datagrid('options').url = '/worktask/getList';
+        taskpersonAddtaskWork.combogrid('grid').datagrid('reload',{
+                keyWork : node.id,
                 selectValue : 1,
                 _token : $('meta[name="csrf-token"]').attr('content')
             });
         taskpersonAddtaskWork.combogrid('setValue',{id:'',name:''});
     }
+    
 });
-
 
 
 //流程事务列表
 taskpersonAddtaskWork.combogrid({
     width : 180,
     height : 32,
-    url : '/worktask/getList',
+    url : '',//'/worktask/getList'
     method : 'post',
     panelWidth : 450,
     panelHeight : 'auto',
@@ -179,7 +191,7 @@ taskpersonAddperson.combotree({
     width : 180,
     height : 32,
     delay : 150,
-    url :'/departments/getTreeTwo',
+    url :'',//'/departments/getTreeTwo'
     method:'get',
     editable : true,
     valueField : 'id',
@@ -188,7 +200,15 @@ taskpersonAddperson.combotree({
     {
         getCombotree(taskpersonAddperson);
                   
-    }
+    },
+    onShowPanel : function()
+    {
+        url = taskpersonAddperson.combotree('options').url;
+        if (url == '') {
+            taskpersonAddperson.combotree('options').url = '/departments/getTreeTwo';
+            taskpersonAddperson.combotree('reload');
+        }
+    },
 });
 
 
@@ -197,7 +217,7 @@ taskpersonAddposition.combobox({
     width : 180,
     height : 32,
     method : 'post',
-    url : '/positions/getList',
+    url : '',//'/positions/getList'
     queryParams: {
          _token : $('meta[name="csrf-token"]').attr('content')  
     },
@@ -209,7 +229,15 @@ taskpersonAddposition.combobox({
     {
         getCombobox(taskpersonAddposition);
                   
-    }
+    },
+    onShowPanel : function()
+    {
+        url = taskpersonAddposition.combobox('options').url;
+        if (url == '') {
+            taskpersonAddposition.combobox('options').url = '/positions/getList';
+            taskpersonAddposition.combobox('reload');
+        }
+    },
 });
 
 

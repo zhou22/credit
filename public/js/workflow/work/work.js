@@ -16,10 +16,14 @@ var work                       =   $('#work'),
 
 
 //表格数据列表
-work.datagrid({
-    url : '/work/getList',
-    fit : true,
+work.treegrid({
+    url :'/work/getList',
     method : 'post',
+    fit : true,
+    lines : true,
+    singleSelect : true,//是否允许多选
+    treeField : 'name',
+    idField : 'id',
     fitColumns : true,
     rownumbers : true,
     border : false,
@@ -27,8 +31,8 @@ work.datagrid({
     sortOrder : 'DESC',
     toolbar : '#work-tool',
     pagination : true,
-    pageSize : 20,
-    pageList : [10, 20, 30, 40, 50],
+    pageSize : 50,
+    pageList : [50,100],
     pageNumber : 1,
     queryParams: {
          _token : $('meta[name="csrf-token"]').attr('content'),
@@ -39,15 +43,39 @@ work.datagrid({
             field : 'id',
             title : '自动编号',
             width : 100,
-            checkbox : true
+            checkbox : true 
         },
         {
             field : 'name',
-            title : '标题',
+            title : '名称',
+            width : 100
+        },
+        {
+            field : 'created_at',
+            title : '创建时间',
             width : 100,
         }
-    ]]
+    ]],
+    onLoadSuccess : function(data){
+        $('.addDep').linkbutton({    
+            iconCls : 'icon-add',
+            height : 19 
+        });
+
+        $('.editDep').linkbutton({    
+            iconCls : 'icon-editB',
+            height : 19 
+        });
+
+        $('.deleteDep').linkbutton({    
+            iconCls : 'icon-deleteB',
+            height : 19 
+        });
+
+    }
 });
+
+
 
 
 
@@ -60,7 +88,7 @@ workOpt = {
     },
     remove : function ()
     {
-        var rows = work.datagrid('getSelections');
+        var rows = work.treegrid('getSelections');
         if (rows.length > 0)
         {
             $.messager.confirm('确认操作', '您真的要删除所选的 <strong>' + rows.length + '</strong> 条记录吗?', function (flag) {
@@ -88,7 +116,7 @@ workOpt = {
                             //user.datagrid('loaded');
                             if (data)
                             {
-                                work.datagrid('reload');
+                                work.treegrid('reload');
                                 $.messager.show({
                                     title : '操作提醒',
                                     msg : data + '条数据被成功删除！'
@@ -106,7 +134,7 @@ workOpt = {
     },
     edit : function ()
     {
-        var rows = work.datagrid('getSelections');
+        var rows = work.treegrid('getSelections');
         if (rows.length == 1)
         {
             editLoading();
@@ -119,17 +147,18 @@ workOpt = {
     },
     redo : function ()
     {
-        work.datagrid('unselectAll');
+        work.treegrid('unselectAll');
     },
     reload : function ()
     {
-        work.datagrid('reload');
+        work.treegrid('reload');
     },
     search : function (data)
     {
+        
         if (workTool.form('validate'))
         {
-            work.datagrid('load', {
+            work.treegrid('load', {
                 keywords : workSearchKeywords.textbox('getValue'),
                 searchValue : data,
                 selectValue : 1,
@@ -142,6 +171,56 @@ workOpt = {
     {
         workSearchKeywords.textbox('clear');
         this.search(0);
+    },
+    addOne : function (data)
+    {       
+        addLoading();
+        workAdd.dialog('open').dialog('refresh','/work/create');
+        
+    },
+    editOne : function (data)
+    {   
+        editLoading();
+        workEdit.dialog('open').dialog('refresh','/work/'+data.id+'/edit');
+        
+    },
+
+    deleteOne : function (datas)
+    {
+        $.messager.confirm('确认操作', '您真的要删除所选的 <strong>' + datas.name + '</strong> 吗？', function (flag) {
+            if (flag) {
+                $.ajax({
+                    url : '/work/'+datas.id,
+                    type : 'DELETE',
+                    data : {
+                        _token : $('meta[name="csrf-token"]').attr('content')
+                    },
+                    beforeSend : function ()
+                    {
+                        $.messager.progress({
+                            text : '正在处理中...'
+                        });
+                        //user.datagrid('loading');
+                    },
+                    success : function (data)
+                    {
+                        $.messager.progress('close');
+                        //user.datagrid('loaded');
+                        if (data)
+                        {
+                            work.treegrid('reload');
+                            $.messager.show({
+                                title : '操作提醒',
+                                msg : data + '条数据被成功删除！'
+                            })
+                        } else {
+                            $.messager.alert('删除失败', '没有删除任何数据！', 'warning');
+                        }
+                    }
+                });
+            }            
+        });
+
     }
 };
 
@@ -159,7 +238,7 @@ function addLoading()
     workAdd.dialog({
         title : '新增',
         width : 400,
-        height : 200,
+        height : 300,
         closed :true,
         iconCls : 'icon-add',
         modal : true,
@@ -194,7 +273,7 @@ function editLoading()
     workEdit.dialog({
         title : '修改',
         width: 400,
-        height: 200,
+        height: 300,
         iconCls : 'icon-edit',
         modal : true,
         maximizable : true,

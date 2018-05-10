@@ -3,9 +3,9 @@
 */
 var
 //新增面板属性值
-    workAddName                   =   $('#work-add-name')
-
-
+    workAddName                   =   $('#work-add-name'),
+    workAddCategory               =   $('#work-add-category')
+    workAddPid                    =   $('#work-add-pid')
 /*表单字段区域*/
 function workAdding()
 {
@@ -16,7 +16,9 @@ function workAdding()
             type : 'POST',
             data : {
                 _token : $('meta[name="csrf-token"]').attr('content'),
-                name : $.trim(workAddName.val())
+                name : $.trim(workAddName.val()),
+                category : $.trim(workAddCategory.val()),
+                pid : $.trim(workAddPid.val())
             },
             beforeSend : function ()
             {
@@ -45,6 +47,8 @@ function workAdding()
 }
 
 
+
+
 //新增品名
 workAddName.textbox({
     width : 200,
@@ -54,4 +58,47 @@ workAddName.textbox({
     missingMessage : '请输入流程',
     invalidMessage : '流程1-30位之间'
 });
+
+
+//类型
+workAddCategory.combobox({
+    width : 200,
+    height : 32,
+    data : [{
+        id : '目录',
+        text : '目录'
+    },{
+        id : '事务',
+        text : '事务'
+    }],
+    editable : false,
+    required : true,
+    valueField : 'id',
+    textField : 'text',
+    panelHeight : 'auto'
+});
+
+
+
+//新增面板的下拉菜单
+workAddPid.combotree({
+    width : 200,
+    height : 32,
+    delay : 150,
+    url :'/work/getList',
+    method:'post',
+    required : true,
+    editable : true,
+    queryParams: {
+         _token : $('meta[name="csrf-token"]').attr('content'),
+         category :"目录",
+         selectValue : 1,
+         requestType : 'combotree'
+    }
+});
+
+
+
+
+
 $('#work-add table:first').show();

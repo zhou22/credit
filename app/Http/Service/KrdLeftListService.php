@@ -15,7 +15,7 @@ class KrdLeftListService extends Controller
 
         $rels = new KrdLeftList();      
 
-        $rels = $rels->all('id','name as text','url as url','iconCls as iconCls','pid')->toArray();
+        $rels = $rels->all('id','name as text','url','iconCls','pid')->toArray();
 
         //声明数组
         $tree = array();

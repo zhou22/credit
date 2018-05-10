@@ -10,7 +10,7 @@
             <input type="hidden" name="worktask-edit-work_id" id="worktask-edit-work_id" value="{{$rows['work_id']}}">
         </td>
         <td class="label">
-            <label for="worktask-edit-taskName" class="form-label">流程：</label>
+            <label for="worktask-edit-taskName" class="form-label">当前流程：</label>
         </td>
         <td class="input">
             <input type="text" id="worktask-edit-taskName" value="{{$rows['task_name']}}">

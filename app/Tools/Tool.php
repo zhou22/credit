@@ -4,15 +4,32 @@ namespace App\Tools;
 
 class Tool
 {
-    //无限级递归
+    //执行递归数组判断,如果为空则返回原数据.
     static public function getTree($rels,$relsV = 0)
+    {
+
+        $rels2 = self::Tree($rels,$relsV = 0);
+
+        if (count($rels2) == 0) {
+            return $rels;
+        }
+        return $rels2;
+    }
+
+
+
+
+    //无限级递归
+    static public function Tree($rels,$relsV = 0)
     {  
-        $tree = array();                                //每次都声明一个新数组用来放子元素  
+        
+        $tree = [];                              //每次都声明一个新数组用来放子元素  
+
         foreach($rels as $v)
         {  
             if($v['pid'] == $relsV)
             {                      
-                $v['children'] = self::getTree($rels,$v['id']); //递归获取子记录  
+                $v['children'] = self::Tree($rels,$v['id']); //递归获取子记录  
 
                 if($v['children'] == null)
                 {  
@@ -20,15 +37,16 @@ class Tool
                 }  
                 $tree[] = $v;                           //将记录存入新数组  
             }  
-        }  
-        return $tree;                                  //返回新数组  
+        }
+
+        return $tree;                               //返回新数组  
     } 
 
 
     //排序部门和人员
     static public function getTreeTwo($rels,$rels2)
     {
-        $tree = array();
+        $tree = [];
         $rels2 = self::formatData($rels2);
         $rels = self::formatData($rels);
 

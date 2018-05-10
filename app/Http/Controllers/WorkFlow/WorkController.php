@@ -78,8 +78,10 @@ class WorkController extends Controller
     public function edit($id)
     {
         $rows =  $this->rels->getOne($id);
+
         return view('WorkFlow.Work.edit')->with('rows' ,$rows);
     }
+
 
     /**
      * Update the specified resource in storage.

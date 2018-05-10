@@ -78,6 +78,7 @@ class TaskWorkController extends Controller
     public function edit($id)
     {
         $rows =  $this->rels->getOneAll($id);
+
         return view('WorkFlow.WorkTask.edit')->with('rows' ,$rows);
     }
 

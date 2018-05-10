@@ -53,7 +53,6 @@ departmentAddP.combotree({
     onClickIcon : function(index){
         departmentAddP.combotree('setValue',departmentAddP.val());
     }
-
 });
 
 //修改面板的下拉菜单

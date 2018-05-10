@@ -127,12 +127,32 @@ class TaskWorkService extends Controller
         ],$this->messages);
 
 
-
-
         //判断验证是否通过
         if (empty($errors->errors()->all())) {
 
-            //判断是否存在上一项
+            //查找当前id数据
+            $rels = $this->rels->find($datas['id']);
+
+            if (empty($rels)) {
+                return ["status"=>-1,"msg"=>'非法操作!'];
+            }
+
+            //清空原上一下的next_id
+            if ($rels->last_id != 0) {
+                $last = $this->rels->find($rels->last_id);
+                $last->next_id = 0;
+                $last->save();
+            }
+
+            //清空原下一项last_id
+            if ($rels->next_id != 0) {
+                $last = $this->rels->find($rels->next_id);
+                $last->last_id = 0;
+                $last->save();
+            }
+
+
+            //判断是否存在上一项,更新上一流程next_id
             if (!empty($datas['last_id'])) {
                 $last = $this->rels->find($datas['last_id']);
                 if (empty($last)) {
@@ -146,7 +166,7 @@ class TaskWorkService extends Controller
                 $datas['last_id'] = 0;
             }
 
-            //判断是否存在下一项
+            //判断是否存在下一项,更新下一流程last_id
             if (!empty($datas['next_id'])) {
                 $next = $this->rels->find($datas['next_id']);
                 if (empty($next)) {
@@ -158,13 +178,6 @@ class TaskWorkService extends Controller
 
             } else {
                 $datas['next_id'] = 0;
-            }
-
-
-            $rels = $this->rels->find($datas['id']);
-
-            if (empty($rels)) {
-                return ["status"=>-1,"msg"=>'非法操作!'];
             }
 
             $rels->task_name = $datas->input('task_name');
@@ -180,10 +193,6 @@ class TaskWorkService extends Controller
         } else {
             return ["status"=>-1,"msg"=>$errors->errors()->first()];
         }
-
-
-
-
     }
 
 
@@ -191,18 +200,22 @@ class TaskWorkService extends Controller
     //获取上一条和下一条数据
     public function getOneAll($id)
     {
-        $last = $this->rels->where('next_id',$id);
+
         $rels = $this->getOne($id);
-        $next = $this->rels->where('id',$rels->next_id);
-        if (empty($last)) {
-            $rels->lastName = $last->task_name;
-            $rels->lastId = $last->id;
+
+        $last = $this->rels->where('next_id',$rels->id)->where('work_id',$rels->work_id)->get();
+        $next = $this->rels->where('id',$rels->next_id)->where('work_id',$rels->work_id)->get();
+
+        if ($last->first()) {
+            $rels->lastName = $last[0]->task_name;
+            $rels->lastId = $last[0]->id;
         }
 
-        if (empty($next)) {
-            $rels->nextName = $next->task_name;
-            $rels->nextId = $next->id;
+        if ($next->first()) {
+            $rels->nextName = $next[0]->task_name;
+            $rels->nextId = $next[0]->id;
         }
+
         return $rels;
 
     }

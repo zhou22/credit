@@ -3,6 +3,7 @@
 namespace App\Http\Service\WorkFlow;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Validation\Rule;
 use App\Entity\Workflow\Work;
 use Validator;
 use App\Tools\Tool;
@@ -14,7 +15,9 @@ class WorkService extends Controller
     public $rels = null;
 
     public $messages = [
-        'name.between' => '事务名不能为空且不能大于30位!',
+        'name.between'=> '事务不能为空且不能大于30位!',
+        'name.unique' => '事务已存在!',
+        'pid.numeric' => '非法操作!'
     ];
 
 
@@ -35,19 +38,58 @@ class WorkService extends Controller
                                    {    
                                         $query->where('name','like','%'.$relsArray['keywords'].'%');
                                    }  
-                                })                                
-                               ->orderBy($relsArray->input('sort'),$relsArray->input('order'))
-                               ->offset($relsArray->input('rows')*($relsArray->input('page') - 1))
-                               ->limit($relsArray->input('rows'));
+                                })
+                                ->where(function($query) use($relsArray) {
+                                    if (!empty($relsArray['category'])) {
+                                        $query->where('category',$relsArray['category']);                                        
+                                    }
+                                })                 
+                                ->where(function($query) use($relsArray) {
+                                    if (!empty($relsArray['order'])) 
+                                    {
+                                       $query->orderBy($relsArray->input('sort'),$relsArray->input('order'));
+                                    }
+                               })
+                               ->where(function($query) use($relsArray) {
+                                    if (!empty($relsArray['rows'])) 
+                                    {
+                                       $query->offset($relsArray->input('rows')*($relsArray->input('page') - 1));
+                                    }
+                               })
+                               ->where(function($query) use($relsArray) {
+                                    if (!empty($relsArray['rows'])) 
+                                    {
+                                       $query->limit($relsArray->input('rows'));
+                                    }
+                               });
+
+
+           if ($relsArray['requestType'] == 'combotree')
+           {    
+                $rows = $rows->addSelect('id','name as text','pid');
+           }  
 
             $counts = $rows->count();
 
             $rows = $rows->get();
 
-            return array(
-                'total'=>$counts,
-                'rows'=>$rows
-            ); 
+            
+
+           if ($relsArray['searchValue'] != 1)
+           { 
+               $rows = Tool::getTree($rows);
+           }    
+
+           if ($relsArray['requestType'] != 'combotree') {
+                $rels = [
+                    'total'=>$counts,
+                    'rows'=>$rows
+                    ];
+           } else {
+                $rels = $rows ;
+           }
+
+            return $rels; 
                              
         } else {
 
@@ -60,12 +102,18 @@ class WorkService extends Controller
     {
         //验证
         $errors = Validator::make($datas->all(), [
-            'name' => 'between:1,30'
+            'name' => [
+                'between:1,30',
+                 Rule::unique('work')->where('pid',$datas->input('pid')),
+              ],
+            'pid' => 'numeric'
         ],$this->messages);
 
         //判断验证是否通过
         if (empty($errors->errors()->all())) {
             $this->rels->name = $datas->input('name');
+            $this->rels->pid = $datas->input('pid');
+            $this->rels->category = $datas->input('category');
             $this->rels->save();
             return ["status"=>1,"msg"=>'事务加成功！'];
         } else {
@@ -80,7 +128,11 @@ class WorkService extends Controller
     {
         //验证
         $errors = Validator::make($datas->all(), [
-            'name' => 'between:1,30'
+            'name' => [
+                'between:1,30',
+                 Rule::unique('work')->where('pid',$datas->input('pid')),
+              ],
+            'pid' => 'numeric'
         ],$this->messages);
 
         //判断验证是否通过
@@ -91,6 +143,8 @@ class WorkService extends Controller
                 return ["status"=>-1,"msg"=>'非法操作!'];
             }
             $rels2->name = $datas->input('name');
+            $rels2->pid = $datas->input('pid');
+            $rels2->category = $datas->input('category');
             $rels2->save();
             return ["status"=>1,"msg"=>'修改成功!'];
         } else {

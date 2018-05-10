@@ -57,7 +57,7 @@ taskperson.datagrid({
             width : 100,
             formatter : function (value, row)
             {
-                return row.person_name == null ? '申请人所在部门' : row.person_name ;
+                return row.person_name == null ? '申请人所在部门或中心' : row.person_name ;
             }
         },
         {
@@ -70,10 +70,15 @@ taskperson.datagrid({
                     if (row.person_name == null) {
                          return row.position_name == null ? '申请人自己!' : row.position_name ;
                     }
-                    else
-                    {
+
+                   if (row.person_name != null && row.person_type == "部门") {                    
                         return '执行部门所有人!';
                     }
+
+                   if (row.person_name != null && row.person_type == "职员") {                    
+                        return '执行人!';
+                    }
+
                 }
                 else
                 {

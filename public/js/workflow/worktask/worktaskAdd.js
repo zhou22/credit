@@ -52,38 +52,49 @@ function worktaskAdding()
 }
 
 //事务名
-worktaskAddworkName.combobox({
+worktaskAddworkName.combotree({
     width : 180,
     height : 32,
-    url : '/work/getList',
-    queryParams: {
-         _token : $('meta[name="csrf-token"]').attr('content')
-
-    },
+    url :'',//'/work/getList'
+    method:'post',
     required : true,
     editable : true,
-    valueField : 'id',
-    textField : 'name',
-    panelHeight : 'auto',
-    onHidePanel : function() 
+    queryParams: {
+         _token : $('meta[name="csrf-token"]').attr('content'),
+         category :"事务",
+         selectValue : 1,
+         requestType : 'combotree'
+    },
+    onShowPanel : function()
+    {
+        url = worktaskAddworkName.combotree('options').url;
+        if (url == '') {
+            worktaskAddworkName.combotree('options').url = '/work/getList';
+            worktaskAddworkName.combotree('reload');
+        }
+    },
+    onHidePanel : function()
     {  
-        getCombobox(worktaskAddworkName);//验证用户是否选择下拉 
-        worktaskAddlastId.combogrid('grid').datagrid('load',{
-                keyWork : worktaskAddworkName.combobox('getValue'),
+        getCombotree(worktaskAddworkName);//验证用户是否选择下拉
+    },
+    onClick : function(node)
+    {
+        worktaskAddlastId.combogrid('grid').datagrid('options').url = '/worktask/getList';
+        worktaskAddlastId.combogrid('grid').datagrid('reload',{
+                keyWork : node.id,
                 selectValue : 1,
                 _token : $('meta[name="csrf-token"]').attr('content')
             });
         worktaskAddlastId.combogrid('setValue',{id:'',name:''});
     }
+    
 });
-
-
 
 //上一项事务名
 worktaskAddlastId.combogrid({
     width : 180,
     height : 32,
-    url : '/worktask/getList',
+    url :'',//'/worktask/getList';
     method : 'post',
     panelWidth : 450,
     panelHeight : 'auto',
@@ -169,7 +180,7 @@ worktaskAddlastId.combogrid({
 worktaskAddtaskName.combobox({
     width : 180,
     height : 32,
-    url : '/task/getList',
+    url : '',//'/task/getList',
     queryParams: {
          _token : $('meta[name="csrf-token"]').attr('content')
 
@@ -179,6 +190,14 @@ worktaskAddtaskName.combobox({
     valueField : 'id',
     textField : 'name',
     panelHeight : 'auto',
+    onShowPanel : function()
+    {
+        url = worktaskAddtaskName.combobox('options').url;
+        if (url == '') {
+            worktaskAddtaskName.combobox('options').url = '/task/getList';
+            worktaskAddtaskName.combobox('reload');
+        }
+    },
     onHidePanel : function()
     { 
         getCombobox(worktaskAddtaskName);//验证用户是否选择下拉
