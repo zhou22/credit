@@ -3,7 +3,8 @@
 */
 var
 //新增面板属性值
-    taskAddName                   =   $('#task-add-name')
+    taskAddName                   =   $('#task-add-name'),
+    taskAddRemarks                  =   $('#task-add-remarks')
 
 
 /*表单字段区域*/
@@ -16,7 +17,8 @@ function taskAdding()
             type : 'POST',
             data : {
                 _token : $('meta[name="csrf-token"]').attr('content'),
-                name : $.trim(taskAddName.val())
+                name : $.trim(taskAddName.val()),
+                remarks : $.trim(taskAddRemarks.val())
             },
             beforeSend : function ()
             {

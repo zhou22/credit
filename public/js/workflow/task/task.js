@@ -45,6 +45,11 @@ task.datagrid({
             field : 'name',
             title : '标题',
             width : 100,
+        },
+        {
+            field : 'remarks',
+            title : '备注',
+            width : 100,
         }
     ]]
 });
@@ -159,7 +164,7 @@ function addLoading()
     taskAdd.dialog({
         title : '新增',
         width : 400,
-        height : 200,
+        height : 380,
         closed :true,
         iconCls : 'icon-add',
         modal : true,
@@ -194,7 +199,7 @@ function editLoading()
     taskEdit.dialog({
         title : '修改',
         width: 400,
-        height: 200,
+        height: 380,
         iconCls : 'icon-edit',
         modal : true,
         maximizable : true,

@@ -66,6 +66,7 @@ class TaskService extends Controller
         //判断验证是否通过
         if (empty($errors->errors()->all())) {
             $this->rels->name = $datas->input('name');
+            $this->rels->remarks = $datas->input('remarks');
             $this->rels->save();
             return ["status"=>1,"msg"=>'流程加成功！'];
         } else {
@@ -91,6 +92,7 @@ class TaskService extends Controller
                 return ["status"=>-1,"msg"=>'非法操作!'];
             }
             $rels2->name = $datas->input('name');
+            $rels2->remarks = $datas->input('remarks');
             $rels2->save();
             return ["status"=>1,"msg"=>'修改成功!'];
         } else {

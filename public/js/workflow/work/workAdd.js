@@ -36,7 +36,7 @@ function workAdding()
                         msg : '添加成功'
                     });
                     workAdd.dialog('close');
-                    work.datagrid('load');
+                    work.treegrid('load');
                 } else if (data.status == -1) {
                     $.messager.alert('添加失败', data.msg, 'warning', function () {
                     });

@@ -8,7 +8,15 @@
         <td class="input">
             <input type="text" id="task-edit-name" value="{{$rows['name']}}">
         </td>
-    </tr>   
+    </tr>  
+    <tr>
+        <td class="label" valign="top">
+            <label for="task-edit-remarks" class="form-label">备注：</label>
+        </td>
+        <td class="input">
+            <textarea id="task-edit-remarks" class="textarea">{{$rows['remarks']}}</textarea>
+        </td>
+    </tr>  
     </tbody>
 </table>
 <input type="hidden" name="task-edit-id" id="task-edit-id" value="{{$rows['id']}}">

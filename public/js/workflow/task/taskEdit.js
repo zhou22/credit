@@ -5,7 +5,9 @@
 var
 //编辑面板属性值
     taskEditName                   =   $('#task-edit-name'),
-    taskEditId                     =   $('#task-edit-id')
+    taskEditId                     =   $('#task-edit-id'),
+    taskEditRemarks                  =   $('#task-edit-remarks')
+    
 
 //修改面板
 function taskEditing()
@@ -19,6 +21,7 @@ function taskEditing()
                 _token : $('meta[name="csrf-token"]').attr('content'),
                 id : $.trim(taskEditId.val()),
                 name : $.trim(taskEditName.val()),
+                remarks : $.trim(taskEditRemarks.val())
             },
             beforeSend : function ()
             {

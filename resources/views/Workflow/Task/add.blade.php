@@ -9,6 +9,14 @@
             <input type="text" id="task-add-name">
         </td>
     </tr> 
+    <tr>
+        <td class="label" valign="top">
+            <label for="task-add-remarks" class="form-label">备注：</label>
+        </td>
+        <td class="input">
+            <textarea id="task-add-remarks" class="textarea"></textarea>
+        </td>
+    </tr> 
     </tbody>
 </table>
 

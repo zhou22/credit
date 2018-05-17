@@ -40,7 +40,7 @@ function workEditing()
                         msg : '修改成功'
                     });
                     workEdit.dialog('close');
-                    work.datagrid('load');
+                    work.treegrid('load');
                 } else if (data.status == -1) {
                     $.messager.alert('修改失败', data.msg, 'warning', function () {
                     });
