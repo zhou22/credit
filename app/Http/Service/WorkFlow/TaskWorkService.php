@@ -69,41 +69,27 @@ class TaskWorkService extends Controller
    public function add($datas)
     {
 
-        if (!empty($datas['id'])) {
-            $row = $this->rels->find($datas['id']);
-
-            if (empty($row) || $row->work_id != $datas['work_id'] ) {
-                return ["status"=>-1,"msg"=>'非法操作!'];
-            }
-        } else {
-            $datas['id'] = 0;
-        }
-
-
         //验证
         $errors = Validator::make($datas->all(), [
             'remarks' => 'max:255',
             'task_id' => [
                   Rule::unique('task_work')->where(function ($query) use ($datas) {
-                                            $query->where('work_id', $datas['work_id']);
+                                            $query->where('work_id', $datas['work_id'])
+                                                  ->where('child_work_id', $datas['child_work_id']);
                                         })                                         
             ]
         ],$this->messages);
 
         //判断验证是否通过
         if (empty($errors->errors()->all())) {
-            $this->rels->task_name = $datas->input('task_name');
+
             $this->rels->task_id = $datas->input('task_id');
-            $this->rels->work_name = $datas->input('work_name');
             $this->rels->work_id = $datas->input('work_id');
+            $this->rels->child_work_id = $datas->input('child_work_id');
+            $this->rels->child_after = $datas->input('child_after');
             $this->rels->remarks = $datas->input('remarks');
-            $this->rels->next_id = 0;
-            $this->rels->last_id = $datas['id'];
             $this->rels->save();
-            if (!empty($datas['id'])) {
-                $row->next_id = $this->rels->id;
-                $row->save();
-            }
+
             return ["status"=>1,"msg"=>'事务流程加成功！'];
         } else {
             return ["status"=>-1,"msg"=>$errors->errors()->first()];
@@ -120,7 +106,8 @@ class TaskWorkService extends Controller
             'remarks' => 'max:255',
             'task_id' => [
                   Rule::unique('task_work')->where(function ($query) use ($datas) {
-                                            $query->where('work_id', $datas['work_id']);
+                                            $query->where('work_id', $datas['work_id'])
+                                                  ->where('child_work_id', $datas['child_work_id']);
                                         })
                                            ->ignore($datas->id),
             ]
@@ -137,56 +124,11 @@ class TaskWorkService extends Controller
                 return ["status"=>-1,"msg"=>'非法操作!'];
             }
 
-            //清空原上一下的next_id
-            if ($rels->last_id != 0) {
-                $last = $this->rels->find($rels->last_id);
-                $last->next_id = 0;
-                $last->save();
-            }
-
-            //清空原下一项last_id
-            if ($rels->next_id != 0) {
-                $last = $this->rels->find($rels->next_id);
-                $last->last_id = 0;
-                $last->save();
-            }
-
-
-            //判断是否存在上一项,更新上一流程next_id
-            if (!empty($datas['last_id'])) {
-                $last = $this->rels->find($datas['last_id']);
-                if (empty($last)) {
-                    return ["status"=>-1,"msg"=>'非法操作!'];
-                }
-
-                $last->next_id = $datas['id'];
-                $last->save();
-
-            } else {            
-                $datas['last_id'] = 0;
-            }
-
-            //判断是否存在下一项,更新下一流程last_id
-            if (!empty($datas['next_id'])) {
-                $next = $this->rels->find($datas['next_id']);
-                if (empty($next)) {
-                    return ["status"=>-1,"msg"=>'非法操作!'];
-                }
-
-                $next->last_id = $datas['id'];
-                $next->save();                
-
-            } else {
-                $datas['next_id'] = 0;
-            }
-
-            $rels->task_name = $datas->input('task_name');
             $rels->task_id = $datas->input('task_id');
-            $rels->work_name = $datas->input('work_name');
             $rels->work_id = $datas->input('work_id');
+            $rels->child_work_id = $datas->input('child_work_id');
+            $rels->child_after = $datas->input('child_after');
             $rels->remarks = $datas->input('remarks');
-            $rels->next_id = $datas->input('next_id');
-            $rels->last_id = $datas->input('last_id');
             $rels->save();
 
             return ["status"=>1,"msg"=>'事务流程加成功！'];

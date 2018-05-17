@@ -1,5 +1,5 @@
 
-<table class="form-table" style="max-width: 900px; display: none;">
+<table class="form-table" style="max-width: 600px; display: none;">
     <tbody>
     <tr>
         <td class="label">
@@ -8,6 +8,14 @@
         <td class="input">
             <input type="text" id="worktask-add-workName">
         </td>
+        <td class="label">
+            <label for="worktask-add-taskName" class="form-label">当前流程：</label>
+        </td>
+        <td class="input">
+            <input type="text" id="worktask-add-taskName">
+        </td>
+    </tr>
+    <tr>
         <td class="label">
             <label for="worktask-add-childWork" class="form-label">子事务：</label>
         </td>
@@ -23,29 +31,9 @@
     </tr>
     <tr>
         <td class="label">
-            <label for="worktask-add-taskName" class="form-label">流程：</label>
-        </td>
-        <td class="input">
-            <input type="text" id="worktask-add-taskName">
-        </td>
-        <td class="label">
-            <label for="worktask-add-lastId" class="form-label">上一项：</label>
-        </td>
-        <td class="input">
-            <input type="text" id="worktask-add-lastId">
-        </td>
-        <td class="label">
-            <label for="worktask-add-taskJudge" class="form-label">跳转判断：</label>
-        </td>
-        <td class="input">
-            <input type="text" id="worktask-add-taskJudge">
-        </td>
-    </tr>
-    <tr>
-        <td class="label">
             备注:
         </td>
-        <td class="input" colspan="5">
+        <td class="input" colspan="3">
             <textarea id="worktask-add-remark" class="textarea"></textarea>
         </td>
     </tr>

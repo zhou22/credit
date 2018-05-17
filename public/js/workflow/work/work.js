@@ -225,8 +225,8 @@ function addLoading()
     //新增面板
     workAdd.dialog({
         title : '新增',
-        width : 400,
-        height : 300,
+        width : 500,
+        height : 400,
         closed :true,
         iconCls : 'icon-add',
         modal : true,
@@ -260,8 +260,8 @@ function editLoading()
     //修改面板
     workEdit.dialog({
         title : '修改',
-        width: 400,
-        height: 300,
+        width: 500,
+        height: 400,
         iconCls : 'icon-edit',
         modal : true,
         maximizable : true,

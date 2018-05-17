@@ -185,7 +185,7 @@ function addLoading()
     //新增面板
     worktaskAdd.dialog({
         title : '新增',
-        width : 900,
+        width : 600,
         height : 420,
         closed :true,
         iconCls : 'icon-add',
@@ -220,7 +220,7 @@ function editLoading()
     //修改面板
     worktaskEdit.dialog({
         title : '修改',
-        width: 900,
+        width: 600,
         height: 420,
         iconCls : 'icon-edit',
         modal : true,

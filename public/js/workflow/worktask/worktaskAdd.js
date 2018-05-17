@@ -3,11 +3,11 @@
 */
 var
 //新增面板属性值
-    worktaskAddlastId                     =   $('#worktask-add-lastId'),
     worktaskAddtaskName                   =   $('#worktask-add-taskName'),
     worktaskAddworkName                   =   $('#worktask-add-workName'),
     worktaskAddchildWork                  =   $('#worktask-add-childWork'),
-    worktaskAddRemark                     =   $('#worktask-add-remark')
+    worktaskAddRemark                     =   $('#worktask-add-remark'),
+    worktaskAddtaskChildAfter             =   $('#worktask-add-taskChildAfter')
 
 
 /*表单字段区域*/
@@ -20,11 +20,10 @@ function worktaskAdding()
             type : 'POST',
             data : {
                 _token : $('meta[name="csrf-token"]').attr('content'),
-                task_name : $.trim(worktaskAddtaskName.combobox('getText')),
-                work_name : $.trim(worktaskAddworkName.combobox('getText')),
                 task_id : $.trim(worktaskAddtaskName.combobox('getValue')),
-                work_id : $.trim(worktaskAddworkName.combobox('getValue')),
-                id : $.trim(worktaskAddlastId.combogrid('getValue')),
+                work_id : $.trim(worktaskAddworkName.combotree('getValue')),
+                child_work_id : $.trim(worktaskAddchildWork.combotree('getValue')),
+                child_after : $.trim(worktaskAddtaskChildAfter.combobox('getValue')),                
                 remarks : $.trim(worktaskAddRemark.val())
             },
             beforeSend : function ()
@@ -52,6 +51,7 @@ function worktaskAdding()
     }
 }
 
+
 //事务名
 worktaskAddworkName.combotree({
     width : 180,
@@ -77,29 +77,18 @@ worktaskAddworkName.combotree({
     onHidePanel : function()
     {  
         getCombotree(worktaskAddworkName);//验证用户是否选择下拉
-    },
-    onClick : function(node)
-    {
-        worktaskAddlastId.combogrid('grid').datagrid('options').url = '/worktask/getList';
-        worktaskAddlastId.combogrid('grid').datagrid('reload',{
-                keyWork : node.id,
-                selectValue : 1,
-                _token : $('meta[name="csrf-token"]').attr('content')
-            });
-        worktaskAddlastId.combogrid('setValue',{id:'',name:''});
     }
-    
 });
 
 
 
-//事务名
+//子事务名
 worktaskAddchildWork.combotree({
     width : 180,
     height : 32,
     url :'',//'/work/getList'
     method:'post',
-    required : true,
+    required : false,
     editable : true,
     queryParams: {
          _token : $('meta[name="csrf-token"]').attr('content'),
@@ -121,92 +110,23 @@ worktaskAddchildWork.combotree({
     }    
 });
 
-
-
-//上一项事务名
-worktaskAddlastId.combogrid({
+//执行方式
+worktaskAddtaskChildAfter.combobox({
     width : 180,
     height : 32,
-    url :'',//'/worktask/getList';
-    method : 'post',
-    panelWidth : 450,
-    panelHeight : 'auto',
-    panelMaxHeight : 227,
-    fitColumns : true,
-    rownumbers : true,
-    border : false,
-    idField:'id',
-    textField:'task_name',
-    editable : false,
-    sortName : 'created_at',
-    sortOrder : 'ASC',
-    pagination : true,
-    pageSize : 10,
-    pageList : [10, 20, 30, 40, 50],
-    pageNumber : 1,
-    queryParams: {
-         _token : $('meta[name="csrf-token"]').attr('content'),
-         selectValue : 1         
-    },
-    columns : [[
-        {
-            field : 'id',
-            title : '自动编号',
-            width : 50,
-            hidden : true
-        },
-        {
-            field : 'work_name',
-            title : '事务',
-            width : 50,
-        },
-        {
-            field : 'task_name',
-            title : '流程',
-            width : 50,
-        },
-        {
-            field : 'next_id',
-            title : '下一流程',
-            width : 50,
-            formatter : function (value,row,index)
-            {
-                if (row.next_id == null || row.next_id == 0 || row.next_id == ''  ) {
-                    return '无';
-                }else {
-
-                    var _data = worktaskAddlastId.combogrid('grid').datagrid('getData');
-
-                    for (var i = 0; i < _data.rows.length; i++) {  
-                        if (_data.rows[i]['id'] == row.next_id) {  
-                            return _data.rows[i]['work_name']+'=>'+_data.rows[i]['task_name'];
-                        }
-                    }
-                    
-
-                }
-            }
-        },
-        {
-            field : 'created_at',
-            title : '创建时间',
-            width : 100,
-            hidden : true
-        }
-    ]],
-    onOpen : function ()
-    {
-        worktaskAddlastId.combogrid('grid').datagrid('reload');
-    },
-    onShowPanel : function ()
-    {
-        worktaskAddlastId.combogrid('panel').panel('resize', {
-            width : '450px'
-        })
-    }
+    data : [{
+        id : '1',
+        text : '同时结束父流程'
+    },{
+        id : '2',
+        text : '返回父流程'
+    }],
+    editable : true,
+    required : false,
+    valueField : 'id',
+    textField : 'text',
+    panelHeight : 'auto'
 });
-
-
 
 
 //流程名
