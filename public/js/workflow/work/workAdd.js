@@ -18,7 +18,7 @@ function workAdding()
                 _token : $('meta[name="csrf-token"]').attr('content'),
                 name : $.trim(workAddName.val()),
                 category : $.trim(workAddCategory.val()),
-                pid : $.trim(workAddPid.val())
+                pid : $.trim(workAddPid.val()) == '' ? 0 :  workAddPid.val()
             },
             beforeSend : function ()
             {
@@ -87,7 +87,6 @@ workAddPid.combotree({
     delay : 150,
     url :'/work/getList',
     method:'post',
-    required : true,
     editable : true,
     queryParams: {
          _token : $('meta[name="csrf-token"]').attr('content'),

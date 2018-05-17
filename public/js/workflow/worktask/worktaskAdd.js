@@ -4,8 +4,9 @@
 var
 //新增面板属性值
     worktaskAddlastId                     =   $('#worktask-add-lastId'),
-    worktaskAddworkName                   =   $('#worktask-add-workName'),
     worktaskAddtaskName                   =   $('#worktask-add-taskName'),
+    worktaskAddworkName                   =   $('#worktask-add-workName'),
+    worktaskAddchildWork                  =   $('#worktask-add-childWork'),
     worktaskAddRemark                     =   $('#worktask-add-remark')
 
 
@@ -89,6 +90,38 @@ worktaskAddworkName.combotree({
     }
     
 });
+
+
+
+//事务名
+worktaskAddchildWork.combotree({
+    width : 180,
+    height : 32,
+    url :'',//'/work/getList'
+    method:'post',
+    required : true,
+    editable : true,
+    queryParams: {
+         _token : $('meta[name="csrf-token"]').attr('content'),
+         category :"事务",
+         selectValue : 1,
+         requestType : 'combotree'
+    },
+    onShowPanel : function()
+    {
+        url = worktaskAddchildWork.combotree('options').url;
+        if (url == '') {
+            worktaskAddchildWork.combotree('options').url = '/work/getList';
+            worktaskAddchildWork.combotree('reload');
+        }
+    },
+    onHidePanel : function()
+    {  
+        getCombotree(worktaskAddchildWork);//验证用户是否选择下拉
+    }    
+});
+
+
 
 //上一项事务名
 worktaskAddlastId.combogrid({

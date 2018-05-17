@@ -2,7 +2,7 @@
 
 namespace App\Http\Service\WorkFlow;
 
-use App\Entity\Workflow\Tasking;
+use App\Entity\Workflow\TaskFlow;
 use App\Http\Controllers\Controller;
 
 
@@ -11,7 +11,7 @@ class TaskingService extends Controller
 {
     public function __construct()
     {
-        $this->rels = new Tasking();
+        $this->rels = new TaskFlow();
 
     }
 

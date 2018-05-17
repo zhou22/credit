@@ -54,25 +54,13 @@ work.treegrid({
             field : 'created_at',
             title : '创建时间',
             width : 100,
+        },
+        {
+            field : '操作',
+            title : '操作',
+            width : 100
         }
-    ]],
-    onLoadSuccess : function(data){
-        $('.addDep').linkbutton({    
-            iconCls : 'icon-add',
-            height : 19 
-        });
-
-        $('.editDep').linkbutton({    
-            iconCls : 'icon-editB',
-            height : 19 
-        });
-
-        $('.deleteDep').linkbutton({    
-            iconCls : 'icon-deleteB',
-            height : 19 
-        });
-
-    }
+    ]]
 });
 
 

@@ -9,16 +9,36 @@
             <input type="text" id="worktask-add-workName">
         </td>
         <td class="label">
+            <label for="worktask-add-childWork" class="form-label">子事务：</label>
+        </td>
+        <td class="input">
+            <input type="text" id="worktask-add-childWork">
+        </td>
+        <td class="label">
+            <label for="worktask-add-taskChildAfter" class="form-label">执行方式：</label>
+        </td>
+        <td class="input">
+            <input type="text" id="worktask-add-taskChildAfter">
+        </td>
+    </tr>
+    <tr>
+        <td class="label">
+            <label for="worktask-add-taskName" class="form-label">流程：</label>
+        </td>
+        <td class="input">
+            <input type="text" id="worktask-add-taskName">
+        </td>
+        <td class="label">
             <label for="worktask-add-lastId" class="form-label">上一项：</label>
         </td>
         <td class="input">
             <input type="text" id="worktask-add-lastId">
         </td>
         <td class="label">
-            <label for="worktask-add-taskName" class="form-label">流程：</label>
+            <label for="worktask-add-taskJudge" class="form-label">跳转判断：</label>
         </td>
         <td class="input">
-            <input type="text" id="worktask-add-taskName">
+            <input type="text" id="worktask-add-taskJudge">
         </td>
     </tr>
     <tr>

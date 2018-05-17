@@ -22,7 +22,7 @@ function workEditing()
                 id : $.trim(workEditId.val()),
                 name : $.trim(workEditName.val()),
                 category : $.trim(workEditCategory.val()),
-                pid : $.trim(workEditPid.val())
+                pid : $.trim(workEditPid.val()) == '' ? 0 :  workEditPid.val()
             },
             beforeSend : function ()
             {

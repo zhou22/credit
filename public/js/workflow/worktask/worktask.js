@@ -186,7 +186,7 @@ function addLoading()
     worktaskAdd.dialog({
         title : '新增',
         width : 900,
-        height : 380,
+        height : 420,
         closed :true,
         iconCls : 'icon-add',
         modal : true,
@@ -221,7 +221,7 @@ function editLoading()
     worktaskEdit.dialog({
         title : '修改',
         width: 900,
-        height: 380,
+        height: 420,
         iconCls : 'icon-edit',
         modal : true,
         maximizable : true,
