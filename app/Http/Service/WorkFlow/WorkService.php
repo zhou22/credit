@@ -162,5 +162,11 @@ class WorkService extends Controller
         return  $this->rels->find($id);
     }
 
+    // 获取所有数据
+    public function getAll()
+    {
+        return  $this->rels->all();
+    }
+    
 
 }

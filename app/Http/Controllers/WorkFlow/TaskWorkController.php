@@ -3,10 +3,11 @@
 namespace App\Http\Controllers\WorkFlow;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use App\Http\Service\WorkFlow\TaskService;
+use App\Http\Service\WorkFlow\WorkService;
 use App\Http\Service\WorkFlow\TaskWorkService;
 
-class TaskWorkController extends Controller
+class TaskWorkController extends BaseController
 {
 
     public $rels = null;
@@ -34,7 +35,42 @@ class TaskWorkController extends Controller
      */
     public function getList(Request $request)
     {
-        return $this->rels->getList($request);
+        $rels = $this->rels->getList($request);
+
+        $taskRels = new TaskService();
+        $workRels = new WorkService();
+
+        $taskRels = $taskRels->getAll();
+
+        $workRels = $workRels->getAll();
+
+        foreach ($rels['rows'] as $value) 
+        {            
+            foreach ($taskRels as $v) 
+            {
+                if ($v['id'] == $value['task_id']) {
+                    $value['task_name'] = $v['name'];
+                }
+            }
+
+            foreach ($workRels as $v2) 
+            {
+                if ($v2['id'] == $value['work_id']) {
+                    $value['work_name'] = $v2['name'];                    
+                }
+
+                if (!empty($value['child_work_id']) && $v2['id'] == $value['child_work_id']) {
+                    $value['child_work_name'] = $v2['name'];          
+                }else{
+                    $value['child_work_name'] = "无";    
+                }
+
+            }
+        }
+
+
+
+        return $rels;
     }
 
     /**

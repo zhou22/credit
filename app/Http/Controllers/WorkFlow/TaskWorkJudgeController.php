@@ -3,10 +3,9 @@
 namespace App\Http\Controllers\WorkFlow;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Http\Service\WorkFlow\TaskWorkJudgeService;
 
-class TaskWorkJudgeController extends Controller
+class TaskWorkJudgeController extends BaseController
 {
 
     public $rels = null;

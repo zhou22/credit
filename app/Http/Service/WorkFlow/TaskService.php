@@ -102,13 +102,16 @@ class TaskService extends Controller
     }
 
 
-
-
     // 获取一条数据
     public function getOne($id)
     {
         return  $this->rels->find($id);
     }
 
+    // 获取所有数据
+    public function getAll()
+    {
+        return  $this->rels->all();
+    }
 
 }

@@ -52,26 +52,9 @@ worktask.datagrid({
             width : 100,
         },
         {
-            field : 'next_id',
-            title : '下一流程',
+            field : 'child_work_name',
+            title : '子事务',
             width : 100,
-            formatter : function (value,row,index)
-            {
-                if (row.next_id == null || row.next_id == 0 || row.next_id == ''  ) {
-                    return '无';
-                }else {
-
-                    var _data = worktask.datagrid('getData');
-
-                    for (var i = 0; i < _data.rows.length; i++) {  
-                        if (_data.rows[i]['id'] == row.next_id) {  
-                            return _data.rows[i]['work_name']+'=>'+_data.rows[i]['task_name'];
-                        }
-                    }
-                    
-
-                }
-            }
         }
     ]]
 });
@@ -176,7 +159,7 @@ worktaskOpt = {
 /*查询字段区域*/
 worktaskSearchKeywords.textbox({
     width : 150,
-    prompt : '标题'
+    prompt : '事务|流程'
 });
 
 /*函数*/

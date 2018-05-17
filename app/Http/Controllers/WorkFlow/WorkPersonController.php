@@ -3,10 +3,9 @@
 namespace App\Http\Controllers\WorkFlow;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Http\Service\WorkFlow\WorkPersonService;
 
-class WorkPersonController extends Controller
+class WorkPersonController extends BaseController
 {
 
     public $rels = null;

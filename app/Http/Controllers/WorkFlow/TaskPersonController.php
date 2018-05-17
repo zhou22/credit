@@ -3,11 +3,10 @@
 namespace App\Http\Controllers\WorkFlow;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Http\Service\WorkFlow\TaskPersonService;
 use App\Http\Service\WorkFlow\TaskWorkService;
 
-class TaskPersonController extends Controller
+class TaskPersonController extends BaseController
 {
 
     public $rels = null;

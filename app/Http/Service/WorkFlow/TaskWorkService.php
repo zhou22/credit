@@ -143,20 +143,20 @@ class TaskWorkService extends Controller
     public function getOneAll($id)
     {
 
-        $rels = $this->getOne($id);
+        // $rels = $this->getOne($id);
 
-        $last = $this->rels->where('next_id',$rels->id)->where('work_id',$rels->work_id)->get();
-        $next = $this->rels->where('id',$rels->next_id)->where('work_id',$rels->work_id)->get();
+        // $last = $this->rels->where('next_id',$rels->id)->where('work_id',$rels->work_id)->get();
+        // $next = $this->rels->where('id',$rels->next_id)->where('work_id',$rels->work_id)->get();
 
-        if ($last->first()) {
-            $rels->lastName = $last[0]->task_name;
-            $rels->lastId = $last[0]->id;
-        }
+        // if ($last->first()) {
+        //     $rels->lastName = $last[0]->task_name;
+        //     $rels->lastId = $last[0]->id;
+        // }
 
-        if ($next->first()) {
-            $rels->nextName = $next[0]->task_name;
-            $rels->nextId = $next[0]->id;
-        }
+        // if ($next->first()) {
+        //     $rels->nextName = $next[0]->task_name;
+        //     $rels->nextId = $next[0]->id;
+        // }
 
         return $rels;
 
@@ -167,6 +167,13 @@ class TaskWorkService extends Controller
     {
         return  $this->rels->find($id);
     }
+
+    // 获取所有数据
+    public function getAll()
+    {
+        return  $this->rels->all();
+    }
+
 
     // 获取一条数据
     public function getOneWork($data)
