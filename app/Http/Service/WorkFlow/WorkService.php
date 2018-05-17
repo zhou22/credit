@@ -45,7 +45,7 @@ class WorkService extends Controller
                                     }
                                 })                 
                                 ->where(function($query) use($relsArray) {
-                                    if (!empty($relsArray['order'])) 
+                                    if (!empty($relsArray['order']))
                                     {
                                        $query->orderBy($relsArray->input('sort'),$relsArray->input('order'));
                                     }
