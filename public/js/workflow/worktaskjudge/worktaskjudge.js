@@ -40,8 +40,18 @@ worktaskjudge.datagrid({
             checkbox : true
         },
         {
+            field : 'work_name',
+            title : '事务',
+            width : 100,
+        },
+        {
             field : 'work_task',
             title : '流程事务',
+            width : 100,
+        },
+        {
+            field : 'next_name',
+            title : '下一项',
             width : 100,
         },
         {
@@ -52,16 +62,6 @@ worktaskjudge.datagrid({
         {
             field : 'judge',
             title : '判断',
-            width : 100,
-        },
-        {
-            field : 'other',
-            title : '子事务流程',
-            width : 100,
-        },
-        {
-            field : 'execute',
-            title : '执行顺序',
             width : 100,
         }
     ]]
