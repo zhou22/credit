@@ -37,12 +37,14 @@ class TaskWorkController extends BaseController
     {
         $rels = $this->rels->getList($request);
 
-        $taskRels = new TaskService();
-        $workRels = new WorkService();
+        $task = new TaskService();
+        $work = new WorkService();
 
-        $taskRels = $taskRels->getAll();
+        $taskRels = $task->getAll();
 
-        $workRels = $workRels->getAll();
+        $workRels = $work->getAll();
+
+
 
         foreach ($rels['rows'] as $value) 
         {            
@@ -59,13 +61,15 @@ class TaskWorkController extends BaseController
                     $value['work_name'] = $v2['name'];                    
                 }
 
-                if (!empty($value['child_work_id']) && $v2['id'] == $value['child_work_id']) {
-                    $value['child_work_name'] = $v2['name'];          
-                }else{
-                    $value['child_work_name'] = "无";    
+                if ($v2['id'] == $value['child_work_id']) {
+                    $value['child_work_name'] = $v2['name'];                    
                 }
-
             }
+
+            if (empty($value['child_work_id'])) {
+                $value['child_work_name'] = '无';                    
+            }
+
         }
 
 
@@ -113,7 +117,20 @@ class TaskWorkController extends BaseController
      */
     public function edit($id)
     {
-        $rows =  $this->rels->getOneAll($id);
+        $rows =  $this->rels->getOne($id);
+
+        $task = new TaskService();
+        $work = new WorkService();
+
+        $taskRels = $task->getOne($rows['task_id']);
+
+        $workRels = $work->getOne($rows['work_id']);
+
+        $childWorkName = $work->getOne($rows['child_work_id']);
+
+        $rows['work_name'] = $taskRels['name'];
+        $rows['task_name'] = $workRels['name'];
+        $rows['child_work_name'] = $childWorkName['name'];
 
         return view('WorkFlow.WorkTask.edit')->with('rows' ,$rows);
     }

@@ -7,30 +7,29 @@
         </td>
         <td class="input">
             <input type="text" id="worktask-edit-workName" value="{{$rows['work_name']}}">
-            <input type="hidden" name="worktask-edit-work_id" id="worktask-edit-work_id" value="{{$rows['work_id']}}">
+            <input type="hidden" id="worktask-edit-workId" value="{{$rows['work_id']}}">
         </td>
         <td class="label">
             <label for="worktask-edit-taskName" class="form-label">当前流程：</label>
         </td>
         <td class="input">
             <input type="text" id="worktask-edit-taskName" value="{{$rows['task_name']}}">
-            <input type="hidden" name="worktask-edit-task_id" id="worktask-edit-task_id" value="{{$rows['task_id']}}">
+            <input type="hidden" id="worktask-edit-taskId" value="{{$rows['task_id']}}">
         </td>
     </tr>
     <tr>
         <td class="label">
-            <label for="worktask-edit-lastName" class="form-label">上一项：</label>
+            <label for="worktask-edit-childWorkName" class="form-label">子事务：</label>
         </td>
         <td class="input">
-            <input type="text" id="worktask-edit-lastName" value="{{$rows['lastName']}}">
-            <input type="hidden" id="worktask-edit-last_id" value="{{$rows['last_id']}}">
+            <input type="text" id="worktask-edit-childWorkName" value="{{$rows['child_work_name']}}">
+            <input type="hidden" id="worktask-edit-childWorkId" value="{{$rows['child_work_id']}}">
         </td>
         <td class="label">
-            <label for="worktask-edit-nextName" class="form-label">下一项：</label>
+            <label for="worktask-edit-taskChildAfter" class="form-label">执行方式：</label>
         </td>
         <td class="input">
-            <input type="text" id="worktask-edit-nextName" value="{{$rows['nextName']}}">
-            <input type="hidden" id="worktask-edit-next_id" value="{{$rows['next_id']}}">
+            <input type="text" id="worktask-edit-taskChildAfter" value="{{$rows['child_after']}}">
         </td>
     </tr>
     <tr>

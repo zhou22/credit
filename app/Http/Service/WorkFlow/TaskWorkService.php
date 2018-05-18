@@ -139,29 +139,6 @@ class TaskWorkService extends Controller
 
 
 
-    //获取上一条和下一条数据
-    public function getOneAll($id)
-    {
-
-        // $rels = $this->getOne($id);
-
-        // $last = $this->rels->where('next_id',$rels->id)->where('work_id',$rels->work_id)->get();
-        // $next = $this->rels->where('id',$rels->next_id)->where('work_id',$rels->work_id)->get();
-
-        // if ($last->first()) {
-        //     $rels->lastName = $last[0]->task_name;
-        //     $rels->lastId = $last[0]->id;
-        // }
-
-        // if ($next->first()) {
-        //     $rels->nextName = $next[0]->task_name;
-        //     $rels->nextId = $next[0]->id;
-        // }
-
-        return $rels;
-
-    }
-
     // 获取一条数据
     public function getOne($id)
     {
