@@ -1,21 +1,21 @@
 
-var worktaskjudge                       =   $('#worktaskjudge'),
+var taskworkextend                       =   $('#taskworkextend'),
 //新增面板属性值
-    worktaskjudgeAdd                    =   $('#worktaskjudge-add'),
+    taskworkextendAdd                    =   $('#taskworkextend-add'),
 //修改面板
-    worktaskjudgeEdit                    =   $('#worktaskjudge-edit'),
+    taskworkextendEdit                   =   $('#taskworkextend-edit'),
 //筛选属性值
-    worktaskjudgeSearchKeywords         =   $('#worktaskjudge-search-keywords'),
-    worktaskjudgeSearchDateType         =   $('#worktaskjudge-search-date-type'),
-    worktaskjudgeSearchDateFrom         =   $('#worktaskjudge-search-date-from'),
-    worktaskjudgeSearchDateTo           =   $('#worktaskjudge-search-date-to'),
-    worktaskjudgeTool                   =   $('#worktaskjudge-tool'),
-    worktaskjudgeOpt
+    taskworkextendSearchKeywords         =   $('#taskworkextend-search-keywords'),
+    taskworkextendSearchDateType         =   $('#taskworkextend-search-date-type'),
+    taskworkextendSearchDateFrom         =   $('#taskworkextend-search-date-from'),
+    taskworkextendSearchDateTo           =   $('#taskworkextend-search-date-to'),
+    taskworkextendTool                   =   $('#taskworkextend-tool'),
+    taskworkextendOpt
 
 
 //表格数据列表
-worktaskjudge.datagrid({
-    url : '/worktaskjudge/getList',
+taskworkextend.datagrid({
+    url : '/taskworkextend/getList',
     fit : true,
     method : 'post',
     fitColumns : true,
@@ -23,7 +23,7 @@ worktaskjudge.datagrid({
     border : false,
     sortName : 'created_at',
     sortOrder : 'ASC',
-    toolbar : '#worktaskjudge-tool',
+    toolbar : '#taskworkextend-tool',
     pagination : true,
     pageSize : 20,
     pageList : [10, 20, 30, 40, 50],
@@ -63,6 +63,11 @@ worktaskjudge.datagrid({
             field : 'judge',
             title : '判断',
             width : 100,
+        },
+        {
+            field : '123',
+            title : '操作',
+            width : 100,
         }
     ]]
 });
@@ -70,15 +75,15 @@ worktaskjudge.datagrid({
 
 
 //工具条操作
-worktaskjudgeOpt = {
+taskworkextendOpt = {
     add : function ()
     {        
         addLoading();
-        worktaskjudgeAdd.dialog('open').dialog('refresh','/worktaskjudge/create'); 
+        taskworkextendAdd.dialog('open').dialog('refresh','/taskworkextend/create'); 
     },
     remove : function ()
     {
-        var rows = worktaskjudge.datagrid('getSelections');
+        var rows = taskworkextend.datagrid('getSelections');
         if (rows.length > 0)
         {
             $.messager.confirm('确认操作', '您真的要删除所选的 <strong>' + rows.length + '</strong> 条记录吗?', function (flag) {
@@ -88,7 +93,7 @@ worktaskjudgeOpt = {
                             ids.push(rows[i].id);
                     }
                     $.ajax({
-                        url : '/worktaskjudge/'+ids,
+                        url : '/taskworkextend/'+ids,
                         type : 'DELETE',
                         data : {
                             _token : $('meta[name="csrf-token"]').attr('content')
@@ -106,7 +111,7 @@ worktaskjudgeOpt = {
                             //user.datagrid('loaded');
                             if (data)
                             {
-                                worktaskjudge.datagrid('reload');
+                                taskworkextend.datagrid('reload');
                                 $.messager.show({
                                     title : '操作提醒',
                                     msg : data + '条数据被成功删除！'
@@ -124,11 +129,11 @@ worktaskjudgeOpt = {
     },
     edit : function ()
     {
-        var rows = worktaskjudge.datagrid('getSelections');
+        var rows = taskworkextend.datagrid('getSelections');
         if (rows.length == 1)
         {
             editLoading();
-            worktaskjudgeEdit.dialog('open').dialog('refresh','/worktaskjudge/'+rows[0].id+'/edit');
+            taskworkextendEdit.dialog('open').dialog('refresh','/taskworkextend/'+rows[0].id+'/edit');
 
         } else {
             $.messager.alert('操作警告', '编辑记录必须只能选定一条数据！', 'warning');
@@ -137,18 +142,18 @@ worktaskjudgeOpt = {
     },
     redo : function ()
     {
-        worktaskjudge.datagrid('unselectAll');
+        taskworkextend.datagrid('unselectAll');
     },
     reload : function ()
     {
-        worktaskjudge.datagrid('reload');
+        taskworkextend.datagrid('reload');
     },
     search : function (data)
     { 
-        if (worktaskjudgeTool.form('validate'))
+        if (taskworkextendTool.form('validate'))
         {
-            worktaskjudge.datagrid('load', {
-                keywords : worktaskjudgeSearchKeywords.textbox('getValue'),
+            taskworkextend.datagrid('load', {
+                keywords : taskworkextendSearchKeywords.textbox('getValue'),
                 searchValue : data,
                 selectValue : 1,
                 _token : $('meta[name="csrf-token"]').attr('content')
@@ -158,14 +163,14 @@ worktaskjudgeOpt = {
     },
     reset : function ()
     {
-        worktaskjudgeSearchKeywords.textbox('clear');
+        taskworkextendSearchKeywords.textbox('clear');
         this.search(0);
     }
 };
 
 
 /*查询字段区域*/
-worktaskjudgeSearchKeywords.textbox({
+taskworkextendSearchKeywords.textbox({
     width : 150,
     prompt : '标题'
 });
@@ -174,10 +179,10 @@ worktaskjudgeSearchKeywords.textbox({
 function addLoading()
 {
     //新增面板
-    worktaskjudgeAdd.dialog({
+    taskworkextendAdd.dialog({
         title : '新增',
         width : 900,
-        height : 380,
+        height : 450,
         closed :true,
         iconCls : 'icon-add',
         modal : true,
@@ -189,7 +194,7 @@ function addLoading()
                 iconCls : 'icon-accept',
                 handler : function ()
                 {
-                    worktaskjudgeAdding();
+                    taskworkextendAdding();
                 }
 
             },{
@@ -198,7 +203,7 @@ function addLoading()
                 iconCls : 'icon-cross',
                 handler : function ()
                 {
-                    worktaskjudgeAdd.dialog('close');
+                    taskworkextendAdd.dialog('close');
                 }
             }]
     });   
@@ -209,10 +214,10 @@ function addLoading()
 function editLoading()
 {
     //修改面板
-    worktaskjudgeEdit.dialog({
+    taskworkextendEdit.dialog({
         title : '修改',
         width: 900,
-        height: 380,
+        height: 450,
         iconCls : 'icon-edit',
         modal : true,
         maximizable : true,
@@ -223,7 +228,7 @@ function editLoading()
                 iconCls : 'icon-accept',
                 handler : function ()
                 {
-                    worktaskjudgeEditing();
+                    taskworkextendEditing();
                 }
             },{
                 text : '取消',
@@ -231,7 +236,7 @@ function editLoading()
                 iconCls : 'icon-cross',
                 handler : function ()
                 {
-                    worktaskjudgeEdit.dialog('close');
+                    taskworkextendEdit.dialog('close');
                 }
             }]
     });

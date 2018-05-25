@@ -3,16 +3,16 @@
 namespace App\Http\Controllers\WorkFlow;
 
 use Illuminate\Http\Request;
-use App\Http\Service\WorkFlow\TaskWorkJudgeService;
+use App\Http\Service\WorkFlow\TaskWorkExtendService;
 
-class TaskWorkJudgeController extends BaseController
+class TaskWorkExtendController extends BaseController
 {
 
     public $rels = null;
 
     public function __construct()
     {
-        $this->rels = new TaskWorkJudgeService();
+        $this->rels = new TaskWorkExtendService();
     }
 
     /**
@@ -23,7 +23,7 @@ class TaskWorkJudgeController extends BaseController
     public function index()
     {
         //显示页面
-        return view('WorkFlow.WorkTaskJudge.index');
+        return view('WorkFlow.TaskWorkExtend.index');
     }
 
     /**
@@ -33,6 +33,10 @@ class TaskWorkJudgeController extends BaseController
      */
     public function getList(Request $request)
     {
+
+
+
+
         return $this->rels->getList($request);
     }
 
@@ -43,7 +47,7 @@ class TaskWorkJudgeController extends BaseController
      */
     public function create()
     {
-        return view('WorkFlow.WorkTaskJudge.add');
+        return view('WorkFlow.TaskWorkExtend.add');
     }
 
     /**
@@ -77,7 +81,7 @@ class TaskWorkJudgeController extends BaseController
     public function edit($id)
     {
         $rows =  $this->rels->getOneAll($id);
-        return view('WorkFlow.WorkTaskJudge.edit')->with('rows' ,$rows);
+        return view('WorkFlow.TaskWorkExtend.edit')->with('rows' ,$rows);
     }
 
     /**

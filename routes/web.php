@@ -73,8 +73,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('/worktask','WorkFlow\TaskWorkController');
 
     //事务流程判断管理路由
-    Route::post('/worktaskjudge/getList','WorkFlow\TaskWorkJudgeController@getList');//事务流程判断管理列表
-    Route::resource('/worktaskjudge','WorkFlow\TaskWorkJudgeController');
+    Route::post('/taskworkextend/getList','WorkFlow\TaskWorkExtendController@getList');//事务流程判断管理列表
+    Route::resource('/taskworkextend','WorkFlow\TaskWorkExtendController');
 
     //事务流程默认执行人管理路由
     Route::post('/taskperson/getListFormat','WorkFlow\TaskPersonController@getListFormat');//事务流程默认执行人列表

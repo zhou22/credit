@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50719
 File Encoding         : 65001
 
-Date: 2018-05-11 16:20:16
+Date: 2018-05-25 16:22:57
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -247,7 +247,7 @@ INSERT INTO `krd_left_list` VALUES ('30', null, null, null, '空管理', '0', nu
 INSERT INTO `krd_left_list` VALUES ('31', null, null, null, '职位管理', '5', '/positions', 'icon-book');
 INSERT INTO `krd_left_list` VALUES ('34', null, null, null, '固定资产', '3', '/assets', 'icon-book');
 INSERT INTO `krd_left_list` VALUES ('35', null, null, null, '办公耗材', '3', null, 'icon-book');
-INSERT INTO `krd_left_list` VALUES ('36', null, null, null, '流程判断', '2', '/worktaskjudge', 'icon-book');
+INSERT INTO `krd_left_list` VALUES ('36', null, null, null, '流程判断', '2', '/taskworkextend', 'icon-book');
 INSERT INTO `krd_left_list` VALUES ('37', null, null, null, '执行管理', '2', '/taskperson', 'icon-book');
 INSERT INTO `krd_left_list` VALUES ('38', null, null, null, '任务流程表', '2', null, 'icon-book');
 INSERT INTO `krd_left_list` VALUES ('39', null, null, null, '流程事务表', '2', null, 'icon-book');
@@ -370,16 +370,17 @@ CREATE TABLE `krd_users` (
   `staff_id` int(11) DEFAULT NULL COMMENT '//关联员工档案',
   `department_id` int(11) DEFAULT NULL COMMENT '//关联部门id',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=28 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of krd_users
 -- ----------------------------
-INSERT INTO `krd_users` VALUES ('23', '1521619709', '1523019229', null, 'admin', '$2y$10$knVnZgw/R3ihiNAGQ9F/GuGwAvh09VmlyMwKuOqcSRQWQA5QWeCpS', 'GoyJLRfA42tI6Lyb9HMmzG65LesrY6jdKDMoaciazWLms6nYOz8ji3v5w6d7', '1522209747', null, null, '1', '23', null);
+INSERT INTO `krd_users` VALUES ('23', '1521619709', '1523019229', null, 'admin', '$2y$10$knVnZgw/R3ihiNAGQ9F/GuGwAvh09VmlyMwKuOqcSRQWQA5QWeCpS', 'lgodhLy3mDqxO4nWCSVCrsk4iH3nEi60wHBpXxmiljLx8hd8KTVwfmJQLUNY', '1522209747', null, null, '1', '23', null);
 INSERT INTO `krd_users` VALUES ('24', '1521619788', '1522209557', null, 'admin2', '$2y$10$beE.UTEOERkwZQ6es75Qu.fAo.pJHrZzTwkl07Q4qTAEwEF5DpF5.', null, null, null, null, '2', '27', null);
 INSERT INTO `krd_users` VALUES ('25', '1521619825', '1522208389', null, 'admin3', '$2y$10$SkdhZXQuw.IfPUwknQgEnusgA41OrX5tizS.ooHLlkH7EnYKj/g1q', null, null, null, null, '2', '25', null);
 INSERT INTO `krd_users` VALUES ('26', '1521619894', '1523848042', null, 'admin4', '$2y$10$uJDRu36A9QDKOztTaVMvw.YZr7362FAxS7wZtSDHsZ7linggnvpLu', 'rwvI6faAzL9LZPAPei5ep3KfrR6uk2qOVEqekjLq1Vcf6ddGPBxSkMTW2OW0', null, null, null, '1', '24', null);
 INSERT INTO `krd_users` VALUES ('27', '1523860736', '1523860792', null, 'wumy', '$2y$10$nVrRZIny3XHksThRVxc5pe6WTiaN4JTxHZtZcpmIOSGtOHuQrtYMS', 'oVCt76Uitov74aYOZitCJ9dMijPugnJVpmljblVhKntBYX56U2cr4EG5A5pl', null, null, null, '1', '29', null);
+INSERT INTO `krd_users` VALUES ('28', '1526266250', '1526266250', null, 'ss', '$2y$10$oGDZIQZb1pwdD5zYMDfu8.DRRvVnAOLG4pvgvhrWxFXSAX63jLz2i', 'anstugMMrJw3z6IgHq90jFlXcc2UvCvu4MsMvvV7oYQOwG9UV0FKZ1dUY1Qo', null, null, null, '2', null, null);
 
 -- ----------------------------
 -- Table structure for purchase_record
@@ -484,18 +485,26 @@ CREATE TABLE `task` (
   `updated_at` bigint(20) DEFAULT NULL,
   `deleted_at` bigint(20) DEFAULT NULL,
   `name` varchar(45) DEFAULT NULL,
+  `remarks` varchar(255) DEFAULT NULL COMMENT '//备注',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='//任务名表';
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='//任务名表';
 
 -- ----------------------------
 -- Records of task
 -- ----------------------------
+INSERT INTO `task` VALUES ('1', '1526356963', '1526357016', null, '提交申请', '申请人提交申请');
+INSERT INTO `task` VALUES ('2', '1526360922', '1526361262', null, '配置确认', '相关部门确认设备配置型号产生');
+INSERT INTO `task` VALUES ('3', '1526360969', '1526360969', null, '部门主管审批', '各部门主管审批');
+INSERT INTO `task` VALUES ('4', '1526360996', '1526360996', null, '中心经理审批', '各中心经理审批');
+INSERT INTO `task` VALUES ('5', '1526361030', '1526361030', null, '董事长审批', '批复');
+INSERT INTO `task` VALUES ('6', '1526539258', '1526539328', null, '信息技术员确认', '信息技术员确认配置');
+INSERT INTO `task` VALUES ('7', '1526626818', '1526626870', null, '追加预算', '确认是否追加预算');
 
 -- ----------------------------
--- Table structure for tasking
+-- Table structure for task_flow
 -- ----------------------------
-DROP TABLE IF EXISTS `tasking`;
-CREATE TABLE `tasking` (
+DROP TABLE IF EXISTS `task_flow`;
+CREATE TABLE `task_flow` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `created_at` bigint(20) DEFAULT NULL,
   `updated_at` bigint(20) DEFAULT NULL,
@@ -504,11 +513,12 @@ CREATE TABLE `tasking` (
   `task_work_name` varchar(45) DEFAULT NULL COMMENT '//task_work_id对应的name',
   `status` int(11) DEFAULT '1' COMMENT '//1进行,2完成,3驳回',
   `task_info_id` varchar(45) DEFAULT NULL COMMENT '//执行任务表',
+  `task_work_next_id` varchar(45) DEFAULT NULL COMMENT '//下一个执行任务id',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='//记录所有执行的任务流程表';
 
 -- ----------------------------
--- Records of tasking
+-- Records of task_flow
 -- ----------------------------
 
 -- ----------------------------
@@ -526,11 +536,11 @@ CREATE TABLE `task_info` (
   `staff_name` varchar(45) DEFAULT NULL,
   `status` int(11) DEFAULT '1' COMMENT '//1进行,2通过,3驳回',
   `pid` int(11) DEFAULT NULL,
-  `tasking_id` int(11) DEFAULT NULL COMMENT '//任务流程id',
   `krd_task_id` int(11) DEFAULT NULL COMMENT '//当前任务的id(采购,请假)',
-  `tasking_name` varchar(45) DEFAULT NULL COMMENT '//当前进度标题',
+  `table_name` varchar(30) DEFAULT NULL COMMENT '//相关联的表名',
   `sn` int(11) DEFAULT NULL COMMENT '//流程编号',
-  `table_type` varchar(45) DEFAULT NULL COMMENT '//相关联的表名',
+  `task_flow_id` int(11) DEFAULT NULL COMMENT '//当前流程阶段id',
+  `task_flow_name` varchar(20) DEFAULT NULL COMMENT '//当前流程阶段名',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='//一条流程的整体状态';
 
@@ -549,16 +559,19 @@ CREATE TABLE `task_work` (
   `deleted_at` bigint(20) DEFAULT NULL,
   `task_id` int(11) DEFAULT NULL COMMENT '//关联流程表id',
   `work_id` int(11) DEFAULT NULL COMMENT '//关联具体任务id',
-  `next_id` int(11) DEFAULT NULL COMMENT '//指向下一任务id',
-  `remarks` varchar(255) DEFAULT NULL COMMENT '//备注',
   `child_work_id` int(11) DEFAULT NULL COMMENT '//子程序id',
   `child_after` int(11) DEFAULT NULL COMMENT '//子流程结束后 1.同时结束父流程 2.返回父流程',
+  `remarks` varchar(255) DEFAULT NULL COMMENT '//备注',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='//具体流程执行顺序表';
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='//具体流程执行顺序表';
 
 -- ----------------------------
 -- Records of task_work
 -- ----------------------------
+INSERT INTO `task_work` VALUES ('1', '1526528501', '1526528501', null, '1', '7', '9', '1', '测试');
+INSERT INTO `task_work` VALUES ('2', '1526540573', '1526625032', null, '2', '7', null, null, '申请人配置确认');
+INSERT INTO `task_work` VALUES ('3', '1526626742', '1526626742', null, '3', '7', null, null, '无');
+INSERT INTO `task_work` VALUES ('4', '1526626850', '1526626850', null, '7', '7', '4', '2', '无');
 
 -- ----------------------------
 -- Table structure for task_work_extend
@@ -570,9 +583,10 @@ CREATE TABLE `task_work_extend` (
   `updated_at` bigint(20) DEFAULT NULL,
   `deleted_at` bigint(20) DEFAULT NULL,
   `task_work_id` int(11) DEFAULT NULL COMMENT '//关联task_work_id',
+  `task_work_next_id` varchar(45) DEFAULT NULL COMMENT '//下一个id',
   `judge` varchar(100) DEFAULT NULL COMMENT '//判断方法',
-  `other` varchar(45) DEFAULT NULL COMMENT '//子程序判断',
-  `execute` varchar(45) DEFAULT NULL COMMENT '//执行的类型0代表.子程序完成后主程序自动完成,1子程序完成后主程序需要自行确认',
+  `remarks` varchar(255) DEFAULT NULL,
+  `field_type` varchar(45) DEFAULT NULL COMMENT '//相关字段\n',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='//任务流程执行判断表';
 
@@ -592,9 +606,9 @@ CREATE TABLE `task_work_person` (
   `task_work_id` int(11) DEFAULT NULL COMMENT '//任务流程表id',
   `person_id` int(11) DEFAULT '0' COMMENT '//部门或职员id',
   `person_type` char(4) DEFAULT NULL COMMENT '//执行人类型/部门职员',
+  `position_id` int(11) DEFAULT '0' COMMENT '/职位id',
   `execute` int(11) DEFAULT NULL COMMENT '//执行类型,0同时确认,1一人确认则ok',
   `remarks` varchar(255) DEFAULT NULL COMMENT '//备注',
-  `position_id` int(11) DEFAULT '0' COMMENT '/职位id',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='//默认执行人和部门判断表';
 
@@ -665,17 +679,28 @@ CREATE TABLE `work` (
   `updated_at` bigint(20) DEFAULT NULL,
   `deleted_at` bigint(20) DEFAULT NULL,
   `name` varchar(45) DEFAULT NULL COMMENT '//任务名',
-  `pid` int(11) DEFAULT NULL COMMENT '//关联父id',
+  `pid` int(11) DEFAULT '0' COMMENT '//关联父id',
   `table_name` varchar(45) DEFAULT NULL COMMENT '//相关联的表明',
   `url` varchar(45) DEFAULT NULL,
   `iconCls` varchar(45) DEFAULT NULL,
   `category` varchar(45) DEFAULT NULL COMMENT '//类型,目录或者是流程',
+  `remarks` varchar(45) DEFAULT NULL COMMENT '//备注',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='//存储具体流程表(采购申请/预算追加)';
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COMMENT='//存储具体流程表(采购申请/预算追加)';
 
 -- ----------------------------
 -- Records of work
 -- ----------------------------
+INSERT INTO `work` VALUES ('1', '1526368095', '1526368095', null, '科瑞德', '0', null, null, null, '目录', null);
+INSERT INTO `work` VALUES ('2', '1526368800', '1526368800', null, '运营中心', '1', null, null, null, '目录', null);
+INSERT INTO `work` VALUES ('3', '1526368823', '1526368823', null, '财务中心', '1', null, null, null, '目录', null);
+INSERT INTO `work` VALUES ('4', '1526368859', '1526368859', null, '追加预算', '3', null, null, null, '事务', null);
+INSERT INTO `work` VALUES ('5', '1526368876', '1526368876', null, '采购部', '2', null, null, null, '目录', null);
+INSERT INTO `work` VALUES ('6', '1526368885', '1526368885', null, '信息技术部', '2', null, null, null, '目录', null);
+INSERT INTO `work` VALUES ('7', '1526368933', '1526369056', null, 'IT采购申请', '5', null, null, null, '事务', null);
+INSERT INTO `work` VALUES ('8', '1526368985', '1526368985', null, '采购申请', '5', null, null, null, '事务', null);
+INSERT INTO `work` VALUES ('9', '1526522568', '1526522568', null, '配置确认(IT)', '6', null, null, null, '事务', null);
+INSERT INTO `work` VALUES ('10', '1526538628', '1526538628', null, '人事行政中心', '1', null, null, null, '目录', null);
 
 -- ----------------------------
 -- Table structure for work_person
@@ -689,9 +714,10 @@ CREATE TABLE `work_person` (
   `person_id` int(11) DEFAULT NULL COMMENT '//执行人id',
   `person_name` varchar(10) DEFAULT NULL COMMENT '//执行人',
   `execute` varchar(45) DEFAULT NULL COMMENT '//执行的方式类型,全部确认或单个确认0是所有人,1是一个人',
-  `tasking_id` int(11) DEFAULT NULL COMMENT '//执行记录id',
+  `task_flow_id` int(11) DEFAULT NULL COMMENT '//流程阶段id',
   `contents` text COMMENT '//审批内容',
   `status` int(11) DEFAULT '1' COMMENT '//状态1进行,2通过,3驳回',
+  `task_info_id` int(11) DEFAULT NULL COMMENT '//流程任务id',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='//执行当前任务流程的职员id';
 

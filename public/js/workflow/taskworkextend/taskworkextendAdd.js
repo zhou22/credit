@@ -1,35 +1,28 @@
 /**
- * Created by ASUS on 2016/6/9.
- */
-
+* Created by ASUS on 2016/6/9.
+*/
 var
 //新增面板属性值
-    worktaskjudgeEditlastId                     =   $('#worktaskjudge-edit-lastName'),
-    worktaskjudgeEditnextId                     =   $('#worktaskjudge-edit-nextName'),
-    worktaskjudgeEditworkName                   =   $('#worktaskjudge-edit-workName'),
-    worktaskjudgeEdittaskName                   =   $('#worktaskjudge-edit-taskName'),
-    worktaskjudgeEditRemark                     =   $('#worktaskjudge-edit-remark'),
-    worktaskjudgeEditId                         =   $('#worktaskjudge-edit-id')
-//修改面板
-function worktaskjudgeEditing()
+    taskworkextendAddworkName                   =   $('#taskworkextend-add-workName'),
+    taskworkextendAddtaskName                   =   $('#taskworkextend-add-taskWork'),
+    taskworkextendAddworkNameOther              =   $('#taskworkextend-add-other'),
+    taskworkextendAddjudge                      =   $('#taskworkextend-add-judge'),
+    taskworkextendAddfieldType                  =   $('#taskworkextend-add-field_type'),
+    taskworkextendAddRemark                     =   $('#taskworkextend-add-remark')
+
+
+
+/*表单字段区域*/
+function taskworkextendAdding()
 {
-    if (worktaskjudgeEdit.form('validate'))
+    if (taskworkextendAdd.form('validate'))
     {
         $.ajax({
-            url : '/worktaskjudge/'+worktaskjudgeEditId.val(),
-            type : 'put',
+            url : '/taskworkextend',
+            type : 'POST',
             data : {
                 _token : $('meta[name="csrf-token"]').attr('content'),
-                task_name : $.trim(worktaskjudgeEdittaskName.combobox('getText')),
-                work_name : $.trim(worktaskjudgeEditworkName.combobox('getText')),
-                task_id : $.trim(worktaskjudgeEdittaskName.combobox('getValue')),
-                work_id : $.trim(worktaskjudgeEditworkName.combobox('getValue')),
 
-                last_id : $.trim(worktaskjudgeEditlastId.combogrid('getValue')),
-                next_id : $.trim(worktaskjudgeEditnextId.combogrid('getValue')),
-
-                id : $.trim(worktaskjudgeEditId.val()),
-                remarks : $.trim(worktaskjudgeEditRemark.val())
             },
             beforeSend : function ()
             {
@@ -44,256 +37,271 @@ function worktaskjudgeEditing()
                 {
                     $.messager.show({
                         title : '操作提示',
-                        msg : '修改成功'
+                        msg : '添加成功'
                     });
-                    worktaskjudgeEdit.dialog('close');
-                    worktaskjudge.datagrid('load');
+                    taskworkextendAdd.dialog('close');
+                    taskworkextend.datagrid('load');
                 } else if (data.status == -1) {
-                    $.messager.alert('修改失败', data.msg, 'warning', function () {
-                    });
+                    $.messager.alert('添加失败', data.msg, 'warning');
                 }
             }
         });
     }
 }
 
-
-
-
-//上一项事务名
-worktaskjudgeEditlastId.combogrid({
-    width : 180,
-    height : 32,
-    url : '/worktaskjudge/getList',
-    method : 'post',
-    panelWidth : 450,
-    panelHeight : 'auto',
-    panelMaxHeight : 227,
-    fitColumns : true,
-    rownumbers : true,
-    border : false,
-    idField:'id',
-    textField:'task_name',
-    editable : false,
-    sortName : 'created_at',
-    sortOrder : 'DESC',
-    pagination : true,
-    pageSize : 10,
-    pageList : [10, 20, 30, 40, 50],
-    pageNumber : 1,
-    queryParams: {
-         _token : $('meta[name="csrf-token"]').attr('content'),
-         selectValue : 1,
-         keyWork : $('#worktaskjudge-edit-work_id').val()
-    },
-    columns : [[
-        {
-            field : 'id',
-            title : '自动编号',
-            width : 50,
-            hidden : true
-        },
-        {
-            field : 'work_name',
-            title : '事务',
-            width : 50,
-        },
-        {
-            field : 'task_name',
-            title : '流程',
-            width : 50,
-        },
-        {
-            field : 'next_id',
-            title : '下一流程',
-            width : 50,
-            formatter : function (value,row,index)
-            {
-                if (row.next_id == null || row.next_id == 0 || $.trim(row.next_id) == ''  ) {
-                    return '无';
-                }else {
-
-                    var _data = worktaskjudgeEditlastId.combogrid('grid').datagrid('getData');
-
-                    for (var i = 0; i < _data.rows.length; i++) {  
-                        if (_data.rows[i]['id'] == row.next_id) {  
-                            return _data.rows[i]['work_name']+'=>'+_data.rows[i]['task_name'];
-                        }
-                    }
-                    
-
-                }
-            }
-        },
-        {
-            field : 'created_at',
-            title : '创建时间',
-            width : 100,
-            hidden : true
-        }
-    ]],
-    onOpen : function ()
-    {
-        worktaskjudgeEditlastId.combogrid('grid').datagrid('reload');
-    },
-    onShowPanel : function ()
-    {
-        worktaskjudgeEditlastId.combogrid('panel').panel('resize', {
-            width : '450px'
-        })
-    }
-});
-
-
-
-//下一项事务名
-worktaskjudgeEditnextId.combogrid({
-    width : 180,
-    height : 32,
-    url : '/worktaskjudge/getList',
-    method : 'post',
-    panelWidth : 450,
-    panelHeight : 'auto',
-    panelMaxHeight : 227,
-    fitColumns : true,
-    rownumbers : true,
-    border : false,
-    idField:'id',
-    textField:'task_name',
-    editable : false,
-    sortName : 'created_at',
-    sortOrder : 'DESC',
-    pagination : true,
-    pageSize : 10,
-    pageList : [10, 20, 30, 40, 50],
-    pageNumber : 1,
-    queryParams: {
-         _token : $('meta[name="csrf-token"]').attr('content'),
-         selectValue : 1,
-         keyWork : $('#worktaskjudge-edit-work_id').val()
-    },
-    columns : [[
-        {
-            field : 'id',
-            title : '自动编号',
-            width : 50,
-            hidden : true
-        },
-        {
-            field : 'work_name',
-            title : '事务',
-            width : 50,
-        },
-        {
-            field : 'task_name',
-            title : '流程',
-            width : 50,
-        },
-        {
-            field : 'next_id',
-            title : '下一流程',
-            width : 50,
-            formatter : function (value,row,index)
-            {
-                if (row.next_id == null || row.next_id == 0 || $.trim(row.next_id) == ''  ) {
-                    return '无';
-                }else {
-
-                    var _data = worktaskjudgeEditnextId.combogrid('grid').datagrid('getData');
-
-                    for (var i = 0; i < _data.rows.length; i++) {  
-                        if (_data.rows[i]['id'] == row.next_id) {  
-                            return _data.rows[i]['work_name']+'=>'+_data.rows[i]['task_name'];
-                        }
-                    }
-                    
-
-                }
-            }
-        },
-        {
-            field : 'created_at',
-            title : '创建时间',
-            width : 100,
-            hidden : true
-        }
-    ]],
-    onOpen : function ()
-    {
-        worktaskjudgeEditnextId.combogrid('grid').datagrid('reload');
-    },
-    onShowPanel : function ()
-    {
-        worktaskjudgeEditnextId.combogrid('panel').panel('resize', {
-            width : '450px'
-        })
-    }
-});
-
-
-
 //事务名
-worktaskjudgeEditworkName.combobox({
+taskworkextendAddworkName.combotree({
     width : 180,
     height : 32,
-    url : '/work/getList',
-    queryParams: {
-         _token : $('meta[name="csrf-token"]').attr('content'),
-         selectValue : 1
-    },
+    url :'',//'/work/getList'
+    method:'post',
     required : true,
     editable : true,
-    valueField : 'id',
-    textField : 'name',
-    panelHeight : 'auto',
-    onHidePanel : function() 
-    {  
-        getCombobox(worktaskjudgeEditworkName);//验证用户是否选择下拉
-    }
-});
-
-//流程名
-worktaskjudgeEdittaskName.combobox({
-    width : 180,
-    height : 32,
-    url : '/task/getList',
     queryParams: {
          _token : $('meta[name="csrf-token"]').attr('content'),
-         selectValue : 1
+         category :"事务",
+         selectValue : 1,
+         requestType : 'combotree'
     },
-    required : true,
-    editable : true,
-    valueField : 'id',
-    textField : 'name',
-    panelHeight : 'auto',
+    onShowPanel : function()
+    {
+        url = taskworkextendAddworkName.combotree('options').url;
+        if (url == '') {
+            taskworkextendAddworkName.combotree('options').url = '/work/getList';
+            taskworkextendAddworkName.combotree('reload');
+        }
+    },
     onHidePanel : function()
     {  
-        getCombobox(worktaskjudgeEdittaskName);//验证用户是否选择下拉
+        getCombotree(taskworkextendAddworkName);//验证用户是否选择下拉
+    },
+    onClick : function(node)
+    {
+        taskworkextendAddtaskName.combogrid('grid').datagrid('options').url = '/worktask/getList';
+        taskworkextendAddtaskName.combogrid('grid').datagrid('reload',{
+                keyWork : node.id,
+                selectValue : 1,
+                _token : $('meta[name="csrf-token"]').attr('content')
+            });
+        taskworkextendAddtaskName.combogrid('setValue',{id:'',name:''});
+
+        taskworkextendAddworkNameOther.combogrid('grid').datagrid('options').url = '/worktask/getList';
+        taskworkextendAddworkNameOther.combogrid('grid').datagrid('reload',{
+                keyWork : node.id,
+                selectValue : 1,
+                _token : $('meta[name="csrf-token"]').attr('content')
+            });
+        taskworkextendAddworkNameOther.combogrid('setValue',{id:'',name:''});
+
     }
 });
 
-//设置上一项和下一项的值
-$(function(){
 
-    var lastid =  $('#worktaskjudge-edit-last_id').val();
-    var lastname =  $('#worktaskjudge-edit-lastName').val();
-    var nextid =  $('#worktaskjudge-edit-next_id').val();
-    var nextname =  $('#worktaskjudge-edit-nextName').val();
+//流程列表
+taskworkextendAddtaskName.combogrid({
+    width : 180,
+    height : 32,
+    url :'',//'/worktask/getList';
+    required : true,
+    method : 'post',
+    panelWidth : 450,
+    panelHeight : 'auto',
+    panelMaxHeight : 227,
+    fitColumns : true,
+    rownumbers : true,
+    border : false,
+    idField:'id',
+    textField:'task_name',
+    editable : false,
+    sortName : 'created_at',
+    sortOrder : 'ASC',
+    pagination : true,
+    pageSize : 10,
+    pageList : [10, 20, 30, 40, 50],
+    pageNumber : 1,
+    queryParams: {
+         _token : $('meta[name="csrf-token"]').attr('content'),
+         selectValue : 1         
+    },
+    columns : [[
+        {
+            field : 'id',
+            title : '自动编号',
+            width : 50,
+            hidden : true
+        },
+        {
+            field : 'work_name',
+            title : '事务',
+            width : 50,
+        },
+        {
+            field : 'task_name',
+            title : '流程',
+            width : 50,
+        },
+        {
+            field : 'next_id',
+            title : '下一流程',
+            width : 50,
+            formatter : function (value,row,index)
+            {
+                if (row.next_id == null || row.next_id == 0 || row.next_id == ''  ) {
+                    return '无';
+                }else {
 
-    if (lastid == 0 || lastid == '') {
-        lastname = '无';
+                    var _data = taskworkextendAddtaskName.combogrid('grid').datagrid('getData');
+
+                    for (var i = 0; i < _data.rows.length; i++) {  
+                        if (_data.rows[i]['id'] == row.next_id) {  
+                            return _data.rows[i]['work_name']+'=>'+_data.rows[i]['task_name'];
+                        }
+                    }
+                    
+
+                }
+            }
+        },
+        {
+            field : 'created_at',
+            title : '创建时间',
+            width : 100,
+            hidden : true
+        }
+    ]],
+    onOpen : function ()
+    {
+        taskworkextendAddtaskName.combogrid('grid').datagrid('reload');
+    },
+    onShowPanel : function ()
+    {
+        taskworkextendAddtaskName.combogrid('panel').panel('resize', {
+            width : '450px'
+        })
     }
-
-    if (nextid == 0 || nextid == '') {
-        nextname = '无';
-    }
-
-    worktaskjudgeEditlastId.combogrid('setValue',{id:lastid,task_name:lastname});
-    worktaskjudgeEditnextId.combogrid('setValue',{id:nextid,task_name:nextname});
-
-    worktaskjudgeEditworkName.combobox('setValue',$('#worktaskjudge-edit-work_id').val());
-    worktaskjudgeEdittaskName.combobox('setValue',$('#worktaskjudge-edit-task_id').val());
 });
-$('#worktaskjudge-edit table:first').show();
 
 
+
+//子事务名
+taskworkextendAddworkNameOther.combogrid({
+    width : 180,
+    height : 32,
+    url :'',//'/worktask/getList';
+    required : true,
+    method : 'post',
+    panelWidth : 450,
+    panelHeight : 'auto',
+    panelMaxHeight : 227,
+    fitColumns : true,
+    rownumbers : true,
+    border : false,
+    idField:'id',
+    textField:'task_name',
+    editable : false,
+    sortName : 'created_at',
+    sortOrder : 'ASC',
+    pagination : true,
+    pageSize : 10,
+    pageList : [10, 20, 30, 40, 50],
+    pageNumber : 1,
+    queryParams: {
+         _token : $('meta[name="csrf-token"]').attr('content'),
+         selectValue : 1         
+    },
+    columns : [[
+        {
+            field : 'id',
+            title : '自动编号',
+            width : 50,
+            hidden : true
+        },
+        {
+            field : 'work_name',
+            title : '事务',
+            width : 50,
+        },
+        {
+            field : 'task_name',
+            title : '流程',
+            width : 50,
+        },
+        {
+            field : 'next_id',
+            title : '下一流程',
+            width : 50,
+            formatter : function (value,row,index)
+            {
+                if (row.next_id == null || row.next_id == 0 || row.next_id == ''  ) {
+                    return '无';
+                }else {
+
+                    var _data = taskworkextendAddworkNameOther.combogrid('grid').datagrid('getData');
+
+                    for (var i = 0; i < _data.rows.length; i++) {  
+                        if (_data.rows[i]['id'] == row.next_id) {  
+                            return _data.rows[i]['work_name']+'=>'+_data.rows[i]['task_name'];
+                        }
+                    }
+                    
+
+                }
+            }
+        },
+        {
+            field : 'created_at',
+            title : '创建时间',
+            width : 100,
+            hidden : true
+        }
+    ]],
+    onOpen : function ()
+    {
+        taskworkextendAddworkNameOther.combogrid('grid').datagrid('reload');
+    },
+    onShowPanel : function ()
+    {
+        taskworkextendAddworkNameOther.combogrid('panel').panel('resize', {
+            width : '450px'
+        })
+    }
+});
+
+
+
+//判断字段
+taskworkextendAddfieldType.combobox({
+    width : 180,
+    height : 32,
+    url : '',//'/task/getList',
+    queryParams: {
+         _token : $('meta[name="csrf-token"]').attr('content')
+    },
+    editable : true,
+    valueField : 'id',
+    textField : 'name',
+    panelHeight : 'auto',
+    onShowPanel : function()
+    {
+        url = taskworkextendAddfieldType.combobox('options').url;
+        if (url == '') {
+            taskworkextendAddfieldType.combobox('options').url = '/task/getList';
+            taskworkextendAddfieldType.combobox('reload');
+        }
+    },
+    onHidePanel : function()
+    { 
+        getCombobox(taskworkextendAddfieldType);//验证用户是否选择下拉
+    }
+});
+
+
+//判断条件
+taskworkextendAddjudge.textbox({
+    width : 180,
+    height : 32
+});
+
+
+
+$('#taskworkextend-add table:first').show();

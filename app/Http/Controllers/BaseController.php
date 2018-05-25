@@ -7,7 +7,7 @@ use App\Http\Service\WorkFlow\TaskWorkService;
 use App\Http\Service\WorkFlow\TaskingService;
 use App\Http\Service\WorkFlow\TaskInfoService;
 use App\Http\Service\WorkFlow\TaskPersonService;
-use App\Http\Service\WorkFlow\TaskWorkJudgeService;
+use App\Http\Service\WorkFlow\TaskWorkExtendService;
 use App\Http\Service\WorkFlow\WorkPersonService;
 use App\Http\Service\Personnel\DepartmentService;
 
@@ -107,7 +107,7 @@ class BaseController extends Controller
 
         $this->taskWorkInfo[$pid]['title'] =  $this->taskWorkInfo[$pid]['task_work']->work_name.'申请';
 
-        $this->taskWorkInfo[$pid]['task_work_judge'] = $this->getRelsTaskWorkJudge($this->taskWorkInfo[$pid]['task_work']->id);
+        $this->taskWorkInfo[$pid]['task_work_judge'] = $this->getRelsTaskWorkExtend($this->taskWorkInfo[$pid]['task_work']->id);
 
         $this->taskWorkInfo[$pid]['task_person'] = $this->getRelsTaskPerson($this->taskWorkInfo[$pid]['task_work']->id);
 
@@ -284,10 +284,10 @@ class BaseController extends Controller
 
 
     //获取tasWorkExtend表数据
-    public function getRelsTaskWorkJudge($taskWorkId)
+    public function getRelsTaskWorkExtend($taskWorkId)
     {
 
-       $this->TaskPerson = new TaskWorkJudgeService();
+       $this->TaskPerson = new TaskWorkExtendService();
        return $this->TaskPerson->getRels($taskWorkId);
 
     }
