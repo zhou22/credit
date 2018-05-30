@@ -4,6 +4,7 @@ namespace App\Http\Controllers\WorkFlow;
 
 use Illuminate\Http\Request;
 use App\Http\Service\WorkFlow\TaskWorkExtendService;
+use App\Http\Controllers\WorkFlow\TaskWorkController;
 
 class TaskWorkExtendController extends BaseController
 {
@@ -34,10 +35,30 @@ class TaskWorkExtendController extends BaseController
     public function getList(Request $request)
     {
 
+        $taskWork = new TaskWorkController();
+
+        $taskWorkRels = $taskWork->getAll();
+
+        $taskWorkRels = $taskWork->getListRel($taskWorkRels);
 
 
+        $rels = $this->rels->getList($request);
 
-        return $this->rels->getList($request);
+
+        foreach ($rels['rows'] as $value) {
+            foreach ($taskWorkRels as $v) {
+                if ($value['task_work_id'] == $v['id']) {
+                    $value['work_task'] = $v['task_name'];
+                    $value['work_name'] = $v['work_name'];                
+                }
+
+                if ($value['task_work_next_id'] == $v['id']) {
+                    $value['next_name'] = $v['task_name'];                    
+                }
+            }
+        }
+
+        return $rels;
     }
 
     /**
@@ -80,7 +101,26 @@ class TaskWorkExtendController extends BaseController
      */
     public function edit($id)
     {
-        $rows =  $this->rels->getOneAll($id);
+        $rows =  $this->rels->getOne($id);
+
+
+        $taskWork = new TaskWorkController();
+
+        $taskWorkRels = $taskWork->getAll();
+
+        $taskWorkRels = $taskWork->getListRel($taskWorkRels);
+
+        foreach ($taskWorkRels as $v) {
+            if ($rows['task_work_id'] == $v['id']) {
+                $rows['work_task'] = $v['task_name'];
+                $rows['work_name'] = $v['work_name'];            
+            }
+
+            if ($rows['task_work_next_id'] == $v['id']) {
+                $rows['next_name'] = $v['task_name'];                    
+            }
+        }
+
         return view('WorkFlow.TaskWorkExtend.edit')->with('rows' ,$rows);
     }
 

@@ -1,23 +1,23 @@
 
-var taskperson                       =   $('#taskperson'),
+var taskworkperson                       =   $('#taskworkperson'),
 //新增面板属性值
-    taskpersonAdd                    =   $('#taskperson-add'),
+    taskworkpersonAdd                    =   $('#taskworkperson-add'),
 //修改面板
-    taskpersonEdit                    =   $('#taskperson-edit'),
+    taskworkpersonEdit                    =   $('#taskworkperson-edit'),
 //筛选属性值
-    taskpersonSearchKeywords         =   $('#taskperson-search-keywords'),
-    taskpersonSearchDateType         =   $('#taskperson-search-date-type'),
-    taskpersonSearchDateFrom         =   $('#taskperson-search-date-from'),
-    taskpersonSearchDateTo           =   $('#taskperson-search-date-to'),
-    taskpersonTool                   =   $('#taskperson-tool'),
-    taskpersonOpt,
+    taskworkpersonSearchKeywords         =   $('#taskworkperson-search-keywords'),
+    taskworkpersonSearchDateType         =   $('#taskworkperson-search-date-type'),
+    taskworkpersonSearchDateFrom         =   $('#taskworkperson-search-date-from'),
+    taskworkpersonSearchDateTo           =   $('#taskworkperson-search-date-to'),
+    taskworkpersonTool                   =   $('#taskworkperson-tool'),
+    taskworkpersonOpt,
     STAFF_ADD,
     STAFF_EDIT
 
 
 //表格数据列表
-taskperson.datagrid({
-    url : '/taskperson/getListFormat',
+taskworkperson.datagrid({
+    url : '/taskworkperson/getListFormat',
     fit : true,
     method : 'post',
     fitColumns : true,
@@ -25,7 +25,7 @@ taskperson.datagrid({
     border : false,
     sortName : 'created_at',
     sortOrder : 'ASC',
-    toolbar : '#taskperson-tool',
+    toolbar : '#taskworkperson-tool',
     pagination : true,
     pageSize : 20,
     pageList : [10, 20, 30, 40, 50],
@@ -101,15 +101,15 @@ taskperson.datagrid({
 
 
 //工具条操作
-taskpersonOpt = {
+taskworkpersonOpt = {
     add : function ()
     {        
         addLoading();
-        taskpersonAdd.dialog('open').dialog('refresh','/taskperson/create'); 
+        taskworkpersonAdd.dialog('open').dialog('refresh','/taskworkperson/create'); 
     },
     remove : function ()
     {
-        var rows = taskperson.datagrid('getSelections');
+        var rows = taskworkperson.datagrid('getSelections');
         if (rows.length > 0)
         {
             $.messager.confirm('确认操作', '您真的要删除所选的 <strong>' + rows.length + '</strong> 条记录吗?', function (flag) {
@@ -119,7 +119,7 @@ taskpersonOpt = {
                             ids.push(rows[i].id);
                     }
                     $.ajax({
-                        url : '/taskperson/'+ids,
+                        url : '/taskworkperson/'+ids,
                         type : 'DELETE',
                         data : {
                             _token : $('meta[name="csrf-token"]').attr('content')
@@ -137,7 +137,7 @@ taskpersonOpt = {
                             //user.datagrid('loaded');
                             if (data)
                             {
-                                taskperson.datagrid('reload');
+                                taskworkperson.datagrid('reload');
                                 $.messager.show({
                                     title : '操作提醒',
                                     msg : data + '条数据被成功删除！'
@@ -155,11 +155,11 @@ taskpersonOpt = {
     },
     edit : function ()
     {
-        var rows = taskperson.datagrid('getSelections');
+        var rows = taskworkperson.datagrid('getSelections');
         if (rows.length == 1)
         {
             editLoading();
-            taskpersonEdit.dialog('open').dialog('refresh','/taskperson/'+rows[0].id+'/edit');
+            taskworkpersonEdit.dialog('open').dialog('refresh','/taskworkperson/'+rows[0].id+'/edit');
 
         } else {
             $.messager.alert('操作警告', '编辑记录必须只能选定一条数据！', 'warning');
@@ -168,18 +168,18 @@ taskpersonOpt = {
     },
     redo : function ()
     {
-        taskperson.datagrid('unselectAll');
+        taskworkperson.datagrid('unselectAll');
     },
     reload : function ()
     {
-        taskperson.datagrid('reload');
+        taskworkperson.datagrid('reload');
     },
     search : function (data)
     { 
-        if (taskpersonTool.form('validate'))
+        if (taskworkpersonTool.form('validate'))
         {
-            taskperson.datagrid('load', {
-                keywords : taskpersonSearchKeywords.textbox('getValue'),
+            taskworkperson.datagrid('load', {
+                keywords : taskworkpersonSearchKeywords.textbox('getValue'),
                 searchValue : data,
                 selectValue : 1,
                 _token : $('meta[name="csrf-token"]').attr('content')
@@ -189,14 +189,14 @@ taskpersonOpt = {
     },
     reset : function ()
     {
-        taskpersonSearchKeywords.textbox('clear');
+        taskworkpersonSearchKeywords.textbox('clear');
         this.search(0);
     }
 };
 
 
 /*查询字段区域*/
-taskpersonSearchKeywords.textbox({
+taskworkpersonSearchKeywords.textbox({
     width : 150,
     prompt : '标题'
 });
@@ -205,7 +205,7 @@ taskpersonSearchKeywords.textbox({
 function addLoading()
 {
     //新增面板
-    taskpersonAdd.dialog({
+    taskworkpersonAdd.dialog({
         title : '新增',
         width : 900,
         height : 440,
@@ -220,7 +220,7 @@ function addLoading()
                 iconCls : 'icon-accept',
                 handler : function ()
                 {
-                    taskpersonAdding();
+                    taskworkpersonAdding();
                 }
 
             },{
@@ -229,7 +229,7 @@ function addLoading()
                 iconCls : 'icon-cross',
                 handler : function ()
                 {
-                    taskpersonAdd.dialog('close');
+                    taskworkpersonAdd.dialog('close');
                 }
             }]
     });   
@@ -240,7 +240,7 @@ function addLoading()
 function editLoading()
 {
     //修改面板
-    taskpersonEdit.dialog({
+    taskworkpersonEdit.dialog({
         title : '修改',
         width: 900,
         height: 440,
@@ -254,7 +254,7 @@ function editLoading()
                 iconCls : 'icon-accept',
                 handler : function ()
                 {
-                    taskpersonEditing();
+                    taskworkpersonEditing();
                 }
             },{
                 text : '取消',
@@ -262,7 +262,7 @@ function editLoading()
                 iconCls : 'icon-cross',
                 handler : function ()
                 {
-                    taskpersonEdit.dialog('close');
+                    taskworkpersonEdit.dialog('close');
                 }
             }]
     });

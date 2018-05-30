@@ -5,7 +5,7 @@ var
 //新增面板属性值
     taskworkextendAddworkName                   =   $('#taskworkextend-add-workName'),
     taskworkextendAddtaskName                   =   $('#taskworkextend-add-taskWork'),
-    taskworkextendAddworkNameOther              =   $('#taskworkextend-add-other'),
+    taskworkextendAddworkNext                   =   $('#taskworkextend-add-next'),
     taskworkextendAddjudge                      =   $('#taskworkextend-add-judge'),
     taskworkextendAddfieldType                  =   $('#taskworkextend-add-field_type'),
     taskworkextendAddRemark                     =   $('#taskworkextend-add-remark')
@@ -22,7 +22,11 @@ function taskworkextendAdding()
             type : 'POST',
             data : {
                 _token : $('meta[name="csrf-token"]').attr('content'),
-
+                task_work_id : taskworkextendAddtaskName.combogrid('getValue'),
+                task_work_next_id : taskworkextendAddworkNext.combogrid('getValue'),
+                judge : taskworkextendAddjudge.textbox('getText'),
+                field_type : taskworkextendAddfieldType.textbox('getText'),
+                remarks : taskworkextendAddRemark.val()
             },
             beforeSend : function ()
             {
@@ -85,13 +89,13 @@ taskworkextendAddworkName.combotree({
             });
         taskworkextendAddtaskName.combogrid('setValue',{id:'',name:''});
 
-        taskworkextendAddworkNameOther.combogrid('grid').datagrid('options').url = '/worktask/getList';
-        taskworkextendAddworkNameOther.combogrid('grid').datagrid('reload',{
+        taskworkextendAddworkNext.combogrid('grid').datagrid('options').url = '/worktask/getList';
+        taskworkextendAddworkNext.combogrid('grid').datagrid('reload',{
                 keyWork : node.id,
                 selectValue : 1,
                 _token : $('meta[name="csrf-token"]').attr('content')
             });
-        taskworkextendAddworkNameOther.combogrid('setValue',{id:'',name:''});
+        taskworkextendAddworkNext.combogrid('setValue',{id:'',name:''});
 
     }
 });
@@ -184,7 +188,7 @@ taskworkextendAddtaskName.combogrid({
 
 
 //子事务名
-taskworkextendAddworkNameOther.combogrid({
+taskworkextendAddworkNext.combogrid({
     width : 180,
     height : 32,
     url :'',//'/worktask/getList';
@@ -236,7 +240,7 @@ taskworkextendAddworkNameOther.combogrid({
                     return '无';
                 }else {
 
-                    var _data = taskworkextendAddworkNameOther.combogrid('grid').datagrid('getData');
+                    var _data = taskworkextendAddworkNext.combogrid('grid').datagrid('getData');
 
                     for (var i = 0; i < _data.rows.length; i++) {  
                         if (_data.rows[i]['id'] == row.next_id) {  
@@ -257,11 +261,11 @@ taskworkextendAddworkNameOther.combogrid({
     ]],
     onOpen : function ()
     {
-        taskworkextendAddworkNameOther.combogrid('grid').datagrid('reload');
+        taskworkextendAddworkNext.combogrid('grid').datagrid('reload');
     },
     onShowPanel : function ()
     {
-        taskworkextendAddworkNameOther.combogrid('panel').panel('resize', {
+        taskworkextendAddworkNext.combogrid('panel').panel('resize', {
             width : '450px'
         })
     }
@@ -270,29 +274,9 @@ taskworkextendAddworkNameOther.combogrid({
 
 
 //判断字段
-taskworkextendAddfieldType.combobox({
+taskworkextendAddfieldType.textbox({
     width : 180,
-    height : 32,
-    url : '',//'/task/getList',
-    queryParams: {
-         _token : $('meta[name="csrf-token"]').attr('content')
-    },
-    editable : true,
-    valueField : 'id',
-    textField : 'name',
-    panelHeight : 'auto',
-    onShowPanel : function()
-    {
-        url = taskworkextendAddfieldType.combobox('options').url;
-        if (url == '') {
-            taskworkextendAddfieldType.combobox('options').url = '/task/getList';
-            taskworkextendAddfieldType.combobox('reload');
-        }
-    },
-    onHidePanel : function()
-    { 
-        getCombobox(taskworkextendAddfieldType);//验证用户是否选择下拉
-    }
+    height : 32
 });
 
 

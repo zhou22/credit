@@ -6,42 +6,49 @@
             <label for="taskworkextend-edit-workName" class="form-label">事务：</label>
         </td>
         <td class="input">
-            <input type="text" id="taskworkextend-edit-workName" value="{{$rows['work_name']}}">
-            <input type="hidden" name="taskworkextend-edit-work_id" id="taskworkextend-edit-work_id" value="{{$rows['work_id']}}">
+            <input type="text" id="taskworkextend-edit-workName" value="{{$rows->work_name}}">
         </td>
         <td class="label">
-            <label for="taskworkextend-edit-taskName" class="form-label">流程：</label>
+            <label for="taskworkextend-edit-taskWork" class="form-label">流程事务：</label>
         </td>
         <td class="input">
-            <input type="text" id="taskworkextend-edit-taskName" value="{{$rows['task_name']}}">
-            <input type="hidden" name="taskworkextend-edit-task_id" id="taskworkextend-edit-task_id" value="{{$rows['task_id']}}">
+            <input type="text" id="taskworkextend-edit-taskWork" value="{{$rows->task_work_id}}">
+            <input type="hidden" id="taskworkextend-edit-taskWorkName" value="{{$rows->work_task}}">
         </td>
     </tr>
     <tr>
         <td class="label">
-            <label for="taskworkextend-edit-lastName" class="form-label">上一项：</label>
+            <label for="taskworkextend-edit-field_type" class="form-label">判断字段：</label>
         </td>
         <td class="input">
-            <input type="text" id="taskworkextend-edit-lastName" value="{{$rows['lastName']}}">
-            <input type="hidden" id="taskworkextend-edit-last_id" value="{{$rows['last_id']}}">
+            <input type="text" id="taskworkextend-edit-field_type"  value="{{$rows->field_type}}">
         </td>
         <td class="label">
-            <label for="taskworkextend-edit-nextName" class="form-label">下一项：</label>
+            <label for="taskworkextend-edit-judge" class="form-label">判断方式：</label>
         </td>
         <td class="input">
-            <input type="text" id="taskworkextend-edit-nextName" value="{{$rows['nextName']}}">
-            <input type="hidden" id="taskworkextend-edit-next_id" value="{{$rows['next_id']}}">
+            <input type="text" id="taskworkextend-edit-judge"  value="{{$rows->judge}}">
         </td>
     </tr>
+    <tr>
+        <td class="label">
+            <label for="taskworkextend-edit-next" class="form-label">下一流程：</label>
+        </td>
+        <td class="input" colspan="3">
+            <input type="text" id="taskworkextend-edit-next"  value="{{$rows->task_work_next_id}}">  
+            <input type="hidden" id="taskworkextend-edit-nextName"  value="{{$rows->next_name}}">  
+        </td>
+    </tr>
+
     <tr>
         <td class="label">
             备注:
         </td>
         <td class="input" colspan="3">
-            <textarea id="taskworkextend-edit-remark" class="textarea">{{$rows['remarks']}}</textarea>
+            <textarea id="taskworkextend-edit-remark" class="textarea">{{$rows->remarks}}</textarea>
         </td>
     </tr>
     </tbody>
 </table>
-<input type="hidden" name="taskworkextend-edit-id" id="taskworkextend-edit-id" value="{{$rows['id']}}">
+
 <script type="text/javascript" src="{{asset('js/workflow/taskworkextend/taskworkextendEdit.js')}}"></script>

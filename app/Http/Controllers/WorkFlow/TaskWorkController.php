@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Service\WorkFlow\TaskService;
 use App\Http\Service\WorkFlow\WorkService;
 use App\Http\Service\WorkFlow\TaskWorkService;
+use App\Http\Service\WorkFlow\TaskWorkExtendService;
 
 class TaskWorkController extends BaseController
 {
@@ -36,6 +37,32 @@ class TaskWorkController extends BaseController
     public function getList(Request $request)
     {
         $rels = $this->rels->getList($request);
+        $rels['rows'] = self::getListRel($rels['rows']);
+        $taskWorkExtend = new TaskWorkExtendService();
+        $taskWorkExtend = $taskWorkExtend->getAll();
+
+        foreach ($rels['rows'] as $value) {
+            foreach ($taskWorkExtend as $v) {
+                if ($value['id'] == $v['task_work_id'] ) {
+                    $value['next_id'] = $v['task_work_next_id'];
+                }
+            }
+        }
+
+        return $rels;
+    }
+
+
+
+    public function getAll()
+    {   
+        $rels = $this->rels->getAll();
+        return $rels;
+    }
+
+
+    public function getListRel($rels)
+    {
 
         $task = new TaskService();
         $work = new WorkService();
@@ -46,7 +73,7 @@ class TaskWorkController extends BaseController
 
 
 
-        foreach ($rels['rows'] as $value) 
+        foreach ($rels as $value) 
         {            
             foreach ($taskRels as $v) 
             {
@@ -74,6 +101,9 @@ class TaskWorkController extends BaseController
 
         return $rels;
     }
+
+
+
 
     /**
      * Show the form for creating a new resource.

@@ -77,8 +77,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('/taskworkextend','WorkFlow\TaskWorkExtendController');
 
     //事务流程默认执行人管理路由
-    Route::post('/taskperson/getListFormat','WorkFlow\TaskPersonController@getListFormat');//事务流程默认执行人列表
-    Route::resource('/taskperson','WorkFlow\TaskPersonController');
+    Route::post('/taskworkperson/getListFormat','WorkFlow\TaskWorkPersonController@getListFormat');//事务流程默认执行人列表
+    Route::resource('/taskworkperson','WorkFlow\TaskWorkPersonController');
 
 
     //办公审批信息

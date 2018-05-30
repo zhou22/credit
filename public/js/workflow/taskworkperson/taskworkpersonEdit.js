@@ -3,31 +3,32 @@
 */
 var
 //新增面板属性值
-    taskpersonAddworkName                 =   $('#taskperson-add-workname'),
-    taskpersonAddtaskWork                 =   $('#taskperson-add-taskwork'),
-    taskpersonAddperson                   =   $('#taskperson-add-person'),
-    taskpersonAddposition                 =   $('#taskperson-add-position'),
-    taskpersonAddexecute                  =   $('#taskperson-add-execute'),
-    taskpersonAddRemark                   =   $('#taskperson-add-remark')
+    taskworkpersonEditworkName                 =   $('#taskworkperson-edit-workname'),
+    taskworkpersonEdittaskWork                 =   $('#taskworkperson-edit-taskWork'),
+    taskworkpersonEditperson                   =   $('#taskworkperson-edit-person'),
+    taskworkpersonEditposition                 =   $('#taskworkperson-edit-position'),
+    taskworkpersonEditexecute                  =   $('#taskworkperson-edit-execute'),
+    taskworkpersonEditRemark                   =   $('#taskworkperson-edit-remark')
 
 
 /*表单字段区域*/
-function taskpersonAdding()
+function taskworkpersonEditing()
 {
-    if (taskpersonAdd.form('validate'))
+    if (taskworkpersonEdit.form('validate'))
     {
-        var     task_work_id = $.trim(taskpersonAddtaskWork.combobox('getValue')),
-                person_id = $.trim(taskpersonAddperson.combotree('getValue')),
-                person_type = taskpersonAddperson.combotree('tree').tree('getSelected'),
-                position_id = $.trim(taskpersonAddposition.combobox('getValue')),
-                execute = $.trim(taskpersonAddexecute.combobox('getValue')),
-                remarks = $.trim(taskpersonAddRemark.val());
+        var     task_work_id = $.trim(taskworkpersonEdittaskWork.combobox('getValue')),
+            person_id = $.trim(taskworkpersonEditperson.combotree('getValue')),
+            person_type = taskworkpersonEditperson.combotree('tree').tree('getSelected'),
+            position_id = $.trim(taskworkpersonEditposition.combobox('getValue')),
+            execute = $.trim(taskworkpersonEditexecute.combobox('getValue')),
+            remarks = $.trim(taskworkpersonEditRemark.val());
 
         $.ajax({
-            url : '/taskperson',
-            type : 'POST',
+            url : '/taskworkperson/'+$('#taskworkperson-edit-id').val(),
+            type : 'put',
             data : {
                 _token : $('meta[name="csrf-token"]').attr('content'),
+                id : $.trim($('#taskworkperson-edit-id').val()),
                 task_work_id : task_work_id,
                 person_id : person_id == '' ? null : person_id,
                 person_type : person_id == '' ? (position_id == '' ? '职员' : '部门') : person_type.user_type,
@@ -48,10 +49,10 @@ function taskpersonAdding()
                 {
                     $.messager.show({
                         title : '操作提示',
-                        msg : '添加成功'
+                        msg : '修改成功'
                     });
-                    taskpersonAdd.dialog('close');
-                    taskperson.datagrid('load');
+                    taskworkpersonEdit.dialog('close');
+                    taskworkperson.datagrid('load');
                 } else if (data.status == -1) {
                     $.messager.alert('添加失败', data.msg, 'warning');
                 }
@@ -60,11 +61,12 @@ function taskpersonAdding()
     }
 }
 
+
 //事务列表
-taskpersonAddworkName.combotree({
+taskworkpersonEditworkName.combotree({
     width : 180,
     height : 32,
-    url :'',//'/work/getList'
+    url :'/work/getList',//'/work/getList'
     method:'post',
     required : true,
     editable : true,
@@ -76,35 +78,34 @@ taskpersonAddworkName.combotree({
     },
     onShowPanel : function()
     {
-        url = taskpersonAddworkName.combotree('options').url;
+        url = taskworkpersonEditworkName.combotree('options').url;
         if (url == '') {
-            taskpersonAddworkName.combotree('options').url = '/work/getList';
-            taskpersonAddworkName.combotree('reload');
+            taskworkpersonEditworkName.combotree('options').url = '/work/getList';
+            taskworkpersonEditworkName.combotree('reload');
         }
     },
     onHidePanel : function()
     {  
-        getCombotree(taskpersonAddworkName);//验证用户是否选择下拉
+        getCombotree(taskworkpersonEditworkName);//验证用户是否选择下拉
     },
     onClick : function(node)
     {
-        taskpersonAddtaskWork.combogrid('grid').datagrid('options').url = '/worktask/getList';
-        taskpersonAddtaskWork.combogrid('grid').datagrid('reload',{
+        taskworkpersonEdittaskWork.combogrid('grid').datagrid('options').url = '/worktask/getList';
+        taskworkpersonEdittaskWork.combogrid('grid').datagrid('reload',{
                 keyWork : node.id,
                 selectValue : 1,
                 _token : $('meta[name="csrf-token"]').attr('content')
             });
-        taskpersonAddtaskWork.combogrid('setValue',{id:'',name:''});
+        taskworkpersonEdittaskWork.combogrid('setValue',{id:'',name:''});
     }
     
 });
 
-
 //流程事务列表
-taskpersonAddtaskWork.combogrid({
+taskworkpersonEdittaskWork.combogrid({
     width : 180,
     height : 32,
-    url : '',//'/worktask/getList'
+    url : '/worktask/getList',
     method : 'post',
     panelWidth : 450,
     panelHeight : 'auto',
@@ -124,6 +125,7 @@ taskpersonAddtaskWork.combogrid({
     pageNumber : 1,
     queryParams: {
          _token : $('meta[name="csrf-token"]').attr('content'),
+         keyWork : taskworkpersonEditworkName.combobox('getValue'),
          selectValue : 1         
     },
     columns : [[
@@ -153,7 +155,7 @@ taskpersonAddtaskWork.combogrid({
                     return '无';
                 }else {
 
-                    var _data = taskpersonAddtaskWork.combogrid('grid').datagrid('getData');
+                    var _data = taskworkpersonEdittaskWork.combogrid('grid').datagrid('getData');
 
                     for (var i = 0; i < _data.rows.length; i++) {  
                         if (_data.rows[i]['id'] == row.next_id) {  
@@ -174,11 +176,12 @@ taskpersonAddtaskWork.combogrid({
     ]],
     onOpen : function ()
     {
-        taskpersonAddtaskWork.combogrid('grid').datagrid('reload');
+
+        taskworkpersonEdittaskWork.combogrid('grid').datagrid('reload');
     },
     onShowPanel : function ()
     {
-        taskpersonAddtaskWork.combogrid('panel').panel('resize', {
+        taskworkpersonEdittaskWork.combogrid('panel').panel('resize', {
             width : '450px'
         })
     }
@@ -187,37 +190,29 @@ taskpersonAddtaskWork.combogrid({
 
 
 //部门
-taskpersonAddperson.combotree({
+taskworkpersonEditperson.combotree({
     width : 180,
     height : 32,
     delay : 150,
-    url :'',//'/departments/getTreeTwo'
+    url :'/departments/getTreeTwo',
     method:'get',
     editable : true,
     valueField : 'id',
     textField : 'text',
     onHidePanel : function()
     {
-        getCombotree(taskpersonAddperson);
+        getCombotree(taskworkpersonEditperson);
                   
-    },
-    onShowPanel : function()
-    {
-        url = taskpersonAddperson.combotree('options').url;
-        if (url == '') {
-            taskpersonAddperson.combotree('options').url = '/departments/getTreeTwo';
-            taskpersonAddperson.combotree('reload');
-        }
-    },
+    }
 });
 
 
 //职位
-taskpersonAddposition.combobox({
+taskworkpersonEditposition.combobox({
     width : 180,
     height : 32,
     method : 'post',
-    url : '',//'/positions/getList'
+    url : '/positions/getList',
     queryParams: {
          _token : $('meta[name="csrf-token"]').attr('content')  
     },
@@ -227,22 +222,14 @@ taskpersonAddposition.combobox({
     panelHeight : 'auto',
     onHidePanel : function()
     {
-        getCombobox(taskpersonAddposition);
+        getCombobox(taskworkpersonEditposition);
                   
-    },
-    onShowPanel : function()
-    {
-        url = taskpersonAddposition.combobox('options').url;
-        if (url == '') {
-            taskpersonAddposition.combobox('options').url = '/positions/getList';
-            taskpersonAddposition.combobox('reload');
-        }
-    },
+    }
 });
 
 
-//执行类型
-taskpersonAddexecute.combobox({
+//员工类型
+taskworkpersonEditexecute.combobox({
     width : 180,
     height : 32,
     data : [{
@@ -260,4 +247,4 @@ taskpersonAddexecute.combobox({
 });
 
 
-$('#taskperson-add table:first').show();
+$('#taskworkperson-edit table:first').show();

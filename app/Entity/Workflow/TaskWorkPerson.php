@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 
-class TaskPerson extends Model
+class TaskWorkPerson extends Model
 {
     //使用软删除
     use SoftDeletes;
@@ -17,7 +17,7 @@ class TaskPerson extends Model
         'deleted_at'
     ];
     //设置数据库
-    protected $table = 'task_person';
+    protected $table = 'task_work_person';
 
     //自动维护创建和更新时间
     public $timestamps = true;

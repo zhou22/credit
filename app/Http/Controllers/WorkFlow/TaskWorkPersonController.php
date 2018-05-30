@@ -3,17 +3,17 @@
 namespace App\Http\Controllers\WorkFlow;
 
 use Illuminate\Http\Request;
-use App\Http\Service\WorkFlow\TaskPersonService;
+use App\Http\Service\WorkFlow\TaskWorkPersonService;
 use App\Http\Service\WorkFlow\TaskWorkService;
 
-class TaskPersonController extends BaseController
+class TaskWorkPersonController extends BaseController
 {
 
     public $rels = null;
 
     public function __construct()
     {
-        $this->rels = new TaskPersonService();
+        $this->rels = new TaskWorkPersonService();
     }
 
     /**
@@ -24,7 +24,7 @@ class TaskPersonController extends BaseController
     public function index()
     {
         //显示页面
-        return view('WorkFlow.TaskPerson.index');
+        return view('WorkFlow.TaskWorkPerson.index');
     }
 
     /**
@@ -51,7 +51,7 @@ class TaskPersonController extends BaseController
      */
     public function create()
     {
-        return view('WorkFlow.TaskPerson.add');
+        return view('WorkFlow.TaskWorkPerson.add');
     }
 
     /**
@@ -87,7 +87,7 @@ class TaskPersonController extends BaseController
         $rels2 = new TaskWorkService();
         $rows =  $this->rels->getOne($id);
         $rows2 = $rels2->getOne($rows['task_work_id']);
-        return view('WorkFlow.TaskPerson.edit')->with('rows' ,$rows)->with('rows2' ,$rows2);
+        return view('WorkFlow.TaskWorkPerson.edit')->with('rows' ,$rows)->with('rows2' ,$rows2);
     }
 
     /**

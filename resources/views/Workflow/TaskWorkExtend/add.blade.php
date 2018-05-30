@@ -31,10 +31,10 @@
     </tr>
     <tr>
         <td class="label">
-            <label for="taskworkextend-add-other" class="form-label">下一流程：</label>
+            <label for="taskworkextend-add-next" class="form-label">下一流程：</label>
         </td>
         <td class="input" colspan="3">
-            <input type="text" id="taskworkextend-add-other">
+            <input type="text" id="taskworkextend-add-next">
         </td>
     </tr>
 

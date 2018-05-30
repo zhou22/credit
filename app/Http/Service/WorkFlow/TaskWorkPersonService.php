@@ -3,15 +3,16 @@
 namespace App\Http\Service\WorkFlow;
 
 use App\Http\Controllers\Controller;
-use App\Entity\Workflow\TaskPerson;
+use App\Entity\Workflow\TaskWorkPerson;
 use App\Tools\Tool;
 use Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\WorkFlow\TaskWorkController;
 
 
 
-class TaskPersonService extends Controller
+class TaskWorkPersonService extends Controller
 {
     
     public $rels = null;
@@ -23,7 +24,7 @@ class TaskPersonService extends Controller
 
     public function __construct()
     {
-        $this->rels = new TaskPerson();     
+        $this->rels = new TaskWorkPerson();     
 
     }
 
@@ -61,8 +62,13 @@ class TaskPersonService extends Controller
         $rows = $rows['rows'];
 
         
+        $taskWork = new TaskWorkController();
 
-        $row2 = Tool::formatData(DB::table('task_work')->select('work_name','task_name','id')->get());
+        $row2 = $taskWork->getAll();
+        
+        $row2 = $taskWork->getListRel($row2);
+
+        $row2 = Tool::formatData($row2);
 
         $row3 = Tool::formatData(DB::table('krd_staffs')->select('id','name')->get());
 
@@ -124,7 +130,7 @@ class TaskPersonService extends Controller
         $errors = Validator::make($datas->all(), [
             'remarks' => 'max:255',
             'task_work_id' => [
-                  Rule::unique('task_person')->where(function ($query) use ($datas) {
+                  Rule::unique('task_work_person')->where(function ($query) use ($datas) {
                                             $query->where('person_id', $datas['person_id'])
                                                   ->where('person_type', $datas['person_type'])
                                                   ->where('position_id', $datas['position_id']);
@@ -158,7 +164,7 @@ class TaskPersonService extends Controller
         $errors = Validator::make($datas->all(), [
             'remarks' => 'max:255',
             'task_work_id' => [
-                  Rule::unique('task_person')->where(function ($query) use ($datas) {
+                  Rule::unique('task_work_person')->where(function ($query) use ($datas) {
                                             $query->where('person_id', $datas['person_id'])
                                                   ->where('person_type', $datas['person_type'])
                                                   ->where('position_id', $datas['position_id']);
