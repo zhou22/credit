@@ -1,6 +1,6 @@
 
 <style type="text/css">
-    .itGoods .datagrid-row,.oherGoods .datagrid-row {  
+    .datagrid-row,.oherGoods .datagrid-row {  
         height: 70px;
     }
 </style>
@@ -46,26 +46,6 @@
         </td>
         <td class="label" colspan="2">
         </td>
-
-    </tr>
-
-    <tr class="itGoods">
-        <td class="label" valign="top">
-            <label for="purchase-add-product-itList">采购需求：</label>
-        </td>
-        <td class="input" colspan="3">
-            <table id="purchase-product-itList">
-                <tbody>
-                    <tr >
-                        <td style="height: 60px !important;"> </td>
-                        <td valign="top"><input type="text" id="itListType" style="width: 100%;"></td>
-                        <td><input id="itListNumber" type="text" ></td>
-                        <td><input id="itListCause" type="text" ></td>
-                        <td><input id="itListOtherNeed" type="text" ></td>
-                    </tr>
-                </tbody>                
-            </table>
-        </td>
     </tr>
 
     <tr class="oherGoods">
@@ -88,7 +68,8 @@
             </table>
         </td>
     </tr>
-    <tr class="oherGoods">
+
+    <tr>
         <td class="label">
             <label>合计金额：</label>
         </td>

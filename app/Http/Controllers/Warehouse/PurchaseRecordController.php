@@ -17,7 +17,6 @@ class PurchaseRecordController extends BaseController
 
     public $rels = null;
     public $checks = null;
-    public $workType = 1;
 
     public function __construct()
     {
@@ -73,36 +72,8 @@ class PurchaseRecordController extends BaseController
     public function store(Request $request)
     {
 
-        $this->checks = new PurchaseRecordCheck();
-
-        $users = $this->getOneUserInfo($request->user()->staff_id);//获取用户信息
-
-        $checksInfo = $this->checks->addCheck($request,new CheckInfo());
-
-        if ($checksInfo->status == 1) {
-
-            $checksInfo =  $this->rels->add($request,$users,$checksInfo);    
-        }
-
-        $this->taskWorkInfo[0]['workId'] =  $this->workType;
-        $this->taskWorkInfo[0]['lastId'] =  0;
-        $this->taskWorkInfo[0]['krd_task_rels'] =  $checksInfo;
-
-        return $this->addTask($users);
-
-        return Tool::formatData($checksInfo); 
-
     }
 
-    public function itStore(Request $request)
-    {
-
-        $updateTask = $this->updateTask($request);
-
-        return $updateTask;
-
-        return  $this->rels->update($request);  
-    }
 
     /**
      * Display the specified resource.

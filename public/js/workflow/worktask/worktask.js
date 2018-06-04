@@ -55,6 +55,11 @@ worktask.datagrid({
             field : 'child_work_name',
             title : '子事务',
             width : 100,
+        },
+        {
+            field : 'remarks',
+            title : '备注',
+            width : 100,
         }
     ]]
 });

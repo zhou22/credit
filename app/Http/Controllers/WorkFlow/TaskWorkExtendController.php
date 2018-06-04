@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Service\WorkFlow\TaskWorkExtendService;
 use App\Http\Controllers\WorkFlow\TaskWorkController;
 
-class TaskWorkExtendController extends BaseController
+class TaskWorkExtendController extends WorkFlowController
 {
 
     public $rels = null;

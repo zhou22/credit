@@ -83,8 +83,8 @@ Route::middleware('auth')->group(function () {
 
     //办公审批信息
     Route::post('/taskinfo/getList','WorkFlow\TaskInfoController@getList');//办公审批信息列表我的审批
-    Route::post('/taskinfo/getOtherList','WorkFlow\TaskInfoController@getOtherList');//办公审批信息列表需要审批
-    Route::get('/taskinfo/{id}/workpersonid/{taskingId}','WorkFlow\TaskInfoController@showTaskInfo');//显示审批信息
+    // Route::post('/taskinfo/getOtherList','WorkFlow\TaskInfoController@getOtherList');//办公审批信息列表需要审批
+    // Route::get('/taskinfo/{id}/workpersonid/{taskingId}','WorkFlow\TaskInfoController@showTaskInfo');//显示审批信息
 
     Route::resource('/taskinfo','WorkFlow\TaskInfoController');
 

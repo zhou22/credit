@@ -8,7 +8,7 @@ use App\Http\Service\WorkFlow\WorkService;
 use App\Http\Service\WorkFlow\TaskWorkService;
 use App\Http\Service\WorkFlow\TaskWorkExtendService;
 
-class TaskWorkController extends BaseController
+class TaskWorkController extends WorkFlowController
 {
 
     public $rels = null;

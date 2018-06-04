@@ -5,7 +5,7 @@ namespace App\Http\Controllers\WorkFlow;
 use Illuminate\Http\Request;
 use App\Http\Service\WorkFlow\TaskService;
 
-class TaskController extends BaseController
+class TaskController extends WorkFlowController
 {
 
     public $rels = null;

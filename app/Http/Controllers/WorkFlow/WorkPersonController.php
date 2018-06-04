@@ -5,7 +5,7 @@ namespace App\Http\Controllers\WorkFlow;
 use Illuminate\Http\Request;
 use App\Http\Service\WorkFlow\WorkPersonService;
 
-class WorkPersonController extends BaseController
+class WorkPersonController extends WorkFlowController
 {
 
     public $rels = null;

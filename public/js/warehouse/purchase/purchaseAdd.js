@@ -18,20 +18,10 @@ function purchaseAdding()
     $('#listName').textbox({required : false,});
     $('#listNumber').numberbox({required : false,});
     $('#listReach_date').datebox({required : false,});
-    purchaseAddItType.combobox({required : false,})
-    $('#itListCause').textbox({required : false,});
 
     if (purchaseAdd.form('validate'))
     {
-        if (purchaseAddType.combobox('getValue') == 1) {
-           listData =  $('#purchase-product-itList').datagrid('getData');
-           relsType = 1;
-        }
-
-        if (purchaseAddType.combobox('getValue') == 2) {
-           listData =  $('#purchase-product-list').datagrid('getData');     
-           relsType = 2 ;      
-        }
+       listData =  $('#purchase-product-list').datagrid('getData');
 
         if (listData['total'] <= 1) {
             $.messager.alert(' 警告操作', ' 没有添加任何物品！ ', 'warning');
@@ -80,9 +70,6 @@ function purchaseAdding()
     $('#listName').textbox({required : true,});
     $('#listNumber').numberbox({required : true,});
     $('#listReach_date').datebox({required : true,});
-    purchaseAddItType.combobox({required : true,})
-    $('#itListCause').textbox({required : true,});
-
 }
 
 //其他物品申请列表
@@ -234,27 +221,19 @@ purchaseAddType.combobox({
     height : 32,
     data : [{
         id : '1',
-        text : 'IT资产'
+        text : '办公物品'
     },{
         id : '2',
+        text : '生产设备'
+    },{
+        id : '3',
         text : '其他物品'
     }],
     required : true,
     editable : false,
     valueField : 'id',
     textField : 'text',
-    panelHeight : 'auto',
-    onChange : function(newValue) {
-
-        if (newValue == 1) {
-            $('.itGoods').show();
-            $('.oherGoods').hide();
-        }else {
-            $('.itGoods').hide();
-            $('.oherGoods').show();
-        }
-
-    }
+    panelHeight : 'auto'
 });
 
 
@@ -319,173 +298,6 @@ $('#listReach_date').datebox({
     height :60
 
 })
-
-
-
-//it申请表格
-
-//其他物品申请列表
-$('#purchase-product-itList').datagrid({
-    width: '98%',
-    rownumbers : true,
-    autoRowHeight :true,
-    nowrap:false,
-    fitColumns:true,
-    columns: [[
-        {
-            field : 'id',
-            title : '编号',
-            hidden : true
-        },
-        {
-            field : 'itType',
-            title : '设备类型',
-            width : 140
-        },
-        {
-            field : 'itNumber',
-            title : '数量',
-            width : 60
-        },
-        {
-            field : 'itCause',
-            title : '申请原因',
-            width : 150
-        },
-        {
-            field : 'itOtherNeed',
-            title : '其他需求',
-            width : 150
-        },
-        {
-            field: 'opt',
-            title: '操作',
-            width: 60,
-            formatter : function (value,row,index) {
-                if (index == 0) {
-                    return '<a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-add"  style="height:60px;">新增</a>';
-                } else {
-                    return '<a href="javascript:void(0)" class="easyui-linkbutton remove" plain="true" iconCls="icon-remove" style="height:60px;">移除</a>';                    
-                }
-            }
-        }
-    ]],
-    onClickCell :function(index,field) {
-        
-        if (field == 'opt') {
-            if (index == 0 ) {
-                itListAdd();
-            }
-            if (index != 0) {
-                itListRemove(index);
-            }
-        }        
-        $('#purchase-product-itList').datagrid('selectRow', index);
-    }
-});
-
-
-
-function itListAdd()
-{
-
-    var     type = $('#itListType').combobox('getText'),
-            number = $('#itListNumber').val(),
-            cause = $('#itListCause').val(),
-            otherNeed = $('#itListOtherNeed').val()
-
-//判断是否为空
-    if (type == '' || cause == '') {
-        $.messager.alert('警告', '设备类型和申请原因不能为空!','warning');
-        return;
-    }
-
-//判断是否重复添加
-    var data = $('#purchase-product-itList').datagrid('getData');
-    for (var i = 1 ; i < data.rows.length; i++) {
-        if ( data.rows.length > 1 && data.rows[i].itType == type && data.rows[i].itCause == cause && data.rows[i].itOtherNeed == otherNeed) {
-             $.messager.alert('警告', '不能重复添加!','warning');
-             return;
-        }
-    }
-//追加数据到列表
-    $('#purchase-product-itList').datagrid('insertRow',{
-        row: {
-            itType: type,
-            itNumber: number,
-            itCause: cause,
-            itOtherNeed: otherNeed,
-        }
-    });
-
-    $('.remove').linkbutton({    
-        iconCls : 'icon-remove',
-        height : 60 
-    });
-}
-
-function itListRemove(index)
-{
-
-     $.messager.confirm('确认操作', '您确定要删除所选物品吗？', function (flag) {
-        if (flag) {
-            var data = $('#purchase-product-itList').datagrid('getData');
-            $('#purchase-product-itList').datagrid('deleteRow',index);
-        }
-    });
-
-}
-
-
-
-
-
-//it申请列表字段
-//物品类型
-var purchaseAddItType  =  $('#itListType');
-purchaseAddItType.combobox({
-    height : 60,
-    url : '/assetstype/getList',
-    queryParams: {
-         _token : $('meta[name="csrf-token"]').attr('content'),
-         selectValue : 1
-    },
-    required : true,
-    editable : true,
-    valueField : 'id',
-    textField : 'name', 
-    panelHeight : 'auto',
-    onHidePanel : function() 
-    {  
-        getCombobox(purchaseAddItType);
-    }
-});
-
-
-$('#itListCause').textbox({    
-    required : true,
-    width : '100%',
-    multiline :true,
-    height :60
-})
-
-$('#itListOtherNeed').textbox({
-    multiline :true,
-    width : '100%',
-    height :60
-})
-
-$('#itListNumber').numberbox({
-    height :60,
-    width : '100%',
-})
-
-
-
-
-
-$('.itGoods').hide();
-$('.oherGoods').hide();
 
 $(function(){
     $('#purchase-add table:first').show();

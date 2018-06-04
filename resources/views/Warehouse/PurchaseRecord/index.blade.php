@@ -11,6 +11,7 @@
 <form id="purchase-tool" style="padding: 5px;">
     <div class="tool-opt">
         <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-add" onclick="purchaseOpt.add()">新增</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-add" onclick="purchaseOpt.addIt()">IT设备新增</a>
         <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-edit" onclick="purchaseOpt.edit()">编辑</a>
         <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-remove" onclick="purchaseOpt.remove()">删除</a>
         <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-reload" onclick="purchaseOpt.reload()">刷新表</a>

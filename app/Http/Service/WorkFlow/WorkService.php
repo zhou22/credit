@@ -114,6 +114,7 @@ class WorkService extends Controller
             $this->rels->name = $datas->input('name');
             $this->rels->pid = $datas->input('pid');
             $this->rels->category = $datas->input('category');
+            $this->rels->category = $datas->input('category');
             $this->rels->save();
             return ["status"=>1,"msg"=>'事务加成功！'];
         } else {

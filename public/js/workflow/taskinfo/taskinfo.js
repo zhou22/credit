@@ -1,30 +1,31 @@
-    
-var purchase                       =   $('#purchase'),
-//新增面板属性值
-    purchaseAdd                    =   $('#purchase-add'),
-//修改面板
-    purchaseEdit                    =   $('#purchase-edit'),
-//筛选属性值
-    purchaseSearchKeywords         =   $('#purchase-search-keywords'),
-    purchaseSearchDateType         =   $('#purchase-search-date-type'),
-    purchaseSearchDateFrom         =   $('#purchase-search-date-from'),
-    purchaseSearchDateTo           =   $('#purchase-search-date-to'),
-    purchaseTool                   =   $('#purchase-tool'),
-    purchaseOpt
 
+var taskinfo                       =   $('#taskinfo'),
+//新增面板属性值
+    taskinfoAdd                    =   $('#taskinfo-add'),
+//修改面板
+    taskinfoEdit                    =   $('#taskinfo-edit'),
+//筛选属性值
+    taskinfoSearchKeywords         =   $('#taskinfo-search-keywords'),
+    taskinfoSearchDateType         =   $('#taskinfo-search-date-type'),
+    taskinfoSearchDateFrom         =   $('#taskinfo-search-date-from'),
+    taskinfoSearchDateTo           =   $('#taskinfo-search-date-to'),
+    taskinfoTool                   =   $('#taskinfo-tool'),
+    taskinfoOpt,
+    STAFF_ADD,
+    STAFF_EDIT
 
 
 //表格数据列表
-purchase.datagrid({
-    url : '/purchase/record/getList',
+taskinfo.datagrid({
+    url : '/taskinfo/getList',
     fit : true,
     method : 'post',
     fitColumns : true,
     rownumbers : true,
     border : false,
     sortName : 'created_at',
-    sortOrder : 'DESC',
-    toolbar : '#purchase-tool',
+    sortOrder : 'ASC',
+    toolbar : '#taskinfo-tool',
     pagination : true,
     pageSize : 20,
     pageList : [10, 20, 30, 40, 50],
@@ -41,80 +42,40 @@ purchase.datagrid({
             checkbox : true
         },
         {
-            field : 'sn',
-            title : '编号',
+            field : 'title',
+            title : '主题',
             width : 100,
         },
         {
-            field : 'department_name',
-            title : '申请部门',
+            field : 'task_flow_name',
+            title : '当前位置',
             width : 100,
         },
         {
-            field : 'person_name',
-            title : '申请人',
+            field : 'status',
+            title : '状态',
             width : 100,
         },
         {
-            field : 'ask_date',
-            title : '申请时间',
+            field : 'created_at',
+            title : '发起时间',
             width : 100,
-        },
-        {
-            field : 'budget_name',
-            title : '有无预算',
-            width : 100,
-        },
-        {
-            field: 'details',
-            title: '详情',
-            width: 40,
-            fixed : true,
-            formatter : function (value,row)
-            {
-                return '<a href="javascript:void(0)" class="purchase-details" style="height: 18px;margin-left:2px;" onclick="purchaseOpt.details(' + row.id + ');"></a>';
-            }
         }
-    ]],
-    onLoadSuccess : function()
-    {
-        $('.purchase-details').linkbutton({
-            iconCls : 'icon-text',
-            plain : true
-        });
-    },
-    onClickCell : function (index, field)
-    {
-        if (field == 'details') {
-            purchase.datagrid('selectRow', index);
-        }
-    }
+    ]]
 });
 
 
 
 //工具条操作
-purchaseOpt = {
-    details : function (id)
-    {
-        details.
-            dialog('open').
-            dialog('setTitle', '采购申请详情').
-            dialog('refresh');
-    },
+taskinfoOpt = {
     add : function ()
     {        
         addLoading();
-        purchaseAdd.dialog('open').dialog('refresh','/purchase/record/create'); 
-    },
-    addIt : function ()
-    {        
-        addLoading();
-        purchaseAdd.dialog('open').dialog('refresh','/purchase/record/create'); 
+        taskinfoAdd.dialog('open').dialog('refresh','/taskinfo/create');
     },
     remove : function ()
     {
-        var rows = purchase.datagrid('getSelections');
+        var rows = taskinfo.datagrid('getSelections');
         if (rows.length > 0)
         {
             $.messager.confirm('确认操作', '您真的要删除所选的 <strong>' + rows.length + '</strong> 条记录吗?', function (flag) {
@@ -124,7 +85,7 @@ purchaseOpt = {
                             ids.push(rows[i].id);
                     }
                     $.ajax({
-                        url : '/purchase/record/'+ids,
+                        url : '/taskinfo/'+ids,
                         type : 'DELETE',
                         data : {
                             _token : $('meta[name="csrf-token"]').attr('content')
@@ -142,7 +103,7 @@ purchaseOpt = {
                             //user.datagrid('loaded');
                             if (data)
                             {
-                                purchase.datagrid('reload');
+                                taskinfo.datagrid('reload');
                                 $.messager.show({
                                     title : '操作提醒',
                                     msg : data + '条数据被成功删除！'
@@ -160,11 +121,11 @@ purchaseOpt = {
     },
     edit : function ()
     {
-        var rows = purchase.datagrid('getSelections');
+        var rows = taskinfo.datagrid('getSelections');
         if (rows.length == 1)
         {
             editLoading();
-            purchaseEdit.dialog('open').dialog('refresh','/purchase/record/'+rows[0].id+'/edit');
+            taskinfoEdit.dialog('open').dialog('refresh','/taskinfo/'+rows[0].id+'/edit');
 
         } else {
             $.messager.alert('操作警告', '编辑记录必须只能选定一条数据！', 'warning');
@@ -173,18 +134,18 @@ purchaseOpt = {
     },
     redo : function ()
     {
-        purchase.datagrid('unselectAll');
+        taskinfo.datagrid('unselectAll');
     },
     reload : function ()
     {
-        purchase.datagrid('reload');
+        taskinfo.datagrid('reload');
     },
     search : function (data)
-    {
-        if (purchaseTool.form('validate'))
+    { 
+        if (taskinfoTool.form('validate'))
         {
-            purchase.datagrid('load', {
-                keywords : purchaseSearchKeywords.textbox('getValue'),
+            taskinfo.datagrid('load', {
+                keywords : taskinfoSearchKeywords.textbox('getValue'),
                 searchValue : data,
                 selectValue : 1,
                 _token : $('meta[name="csrf-token"]').attr('content')
@@ -194,47 +155,38 @@ purchaseOpt = {
     },
     reset : function ()
     {
-        purchaseSearchKeywords.textbox('clear');
+        taskinfoSearchKeywords.textbox('clear');
         this.search(0);
     }
 };
 
 
 /*查询字段区域*/
-purchaseSearchKeywords.textbox({
+taskinfoSearchKeywords.textbox({
     width : 150,
-    prompt : '标题'
+    prompt : '事务|流程'
 });
 
 /*函数*/
 function addLoading()
 {
     //新增面板
-    purchaseAdd.dialog({
+    taskinfoAdd.dialog({
         title : '新增',
-        width : 900,
-        height : 506,
+        width : 600,
+        height : 420,
         closed :true,
         iconCls : 'icon-add',
         modal : true,
         maximizable : true,
         buttons:[
             {
-                text : '提交申请',
+                text : '保存',
                 size : 'large',
                 iconCls : 'icon-accept',
                 handler : function ()
                 {
-                    purchaseAdding();
-                }
-            },
-            {
-                text : '保存',
-                size : 'large',
-                iconCls : 'icon-save',
-                handler : function ()
-                {
-                    
+                    taskinfoAdding();
                 }
 
             },{
@@ -243,43 +195,32 @@ function addLoading()
                 iconCls : 'icon-cross',
                 handler : function ()
                 {
-                    purchaseAdd.dialog('close');
+                    taskinfoAdd.dialog('close');
                 }
             }]
-    });
-
-    purchaseAdd.dialog('center');
+    });   
 
 }
-
 
 
 function editLoading()
 {
     //修改面板
-    purchaseEdit.dialog({
+    taskinfoEdit.dialog({
         title : '修改',
-        width: 900,
-        height: 200,
+        width: 600,
+        height: 420,
         iconCls : 'icon-edit',
         modal : true,
         maximizable : true,
         buttons:[
             {
-                text : '提交申请',
+                text : '保存',
                 size : 'large',
                 iconCls : 'icon-accept',
                 handler : function ()
                 {
-                }
-            },
-            {
-                text : '保存',
-                size : 'large',
-                iconCls : 'icon-save',
-                handler : function ()
-                {
-                    purchaseEditing();
+                    taskinfoEditing();
                 }
             },{
                 text : '取消',
@@ -287,10 +228,10 @@ function editLoading()
                 iconCls : 'icon-cross',
                 handler : function ()
                 {
-                    purchaseEdit.dialog('close');
+                    taskinfoEdit.dialog('close');
                 }
             }]
     });
-    purchaseEdit.dialog('center');
+
 }
 

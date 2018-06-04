@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Service\WorkFlow\TaskWorkPersonService;
 use App\Http\Service\WorkFlow\TaskWorkService;
 
-class TaskWorkPersonController extends BaseController
+class TaskWorkPersonController extends WorkFlowController
 {
 
     public $rels = null;

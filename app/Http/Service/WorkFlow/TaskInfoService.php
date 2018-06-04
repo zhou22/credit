@@ -51,11 +51,11 @@ class TaskInfoService extends Controller
     
 
         //获取列表数据
+        //     $rows = DB::table('work_person')                       
+        //                          ->where(function($query) use($relsArray) {  
     public function getOtherList($relsArray) 
     {
         // if ($relsArray['selectValue'] == 1) {
-        //     $rows = DB::table('work_person')                       
-        //                          ->where(function($query) use($relsArray) {  
         //                                 $query->where('task_info.staff_id','<>',$relsArray->user()->staff_id);
         //                             })
         //                         ->where('task_info.status','<>',2)
